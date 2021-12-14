@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Buku extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function rak()
+    {
+        return $this->belongsTo(Rak::class);
+    }
 }
