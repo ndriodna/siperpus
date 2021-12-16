@@ -14,7 +14,8 @@ class RakController extends Controller
      */
     public function index()
     {
-        //
+      $raks = Rak::get();
+      return view('dashboard.rak.index',compact('raks'));
     }
 
     /**
@@ -35,7 +36,13 @@ class RakController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $request->validate([
+        'nama' => 'required|string'
+      ]);
+      Rak::create([
+        'nama' => $request->nama
+      ]);
+      return redirect(route('rak.index'));
     }
 
     /**
@@ -82,4 +89,4 @@ class RakController extends Controller
     {
         //
     }
-}
+  }

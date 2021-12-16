@@ -13,6 +13,6 @@ class Buku extends Model
 
     public function rak()
     {
-        return $this->belongsTo(Rak::class);
+        return $this->hasOne(Rak::class);
     }
 }

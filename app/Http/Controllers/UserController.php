@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
-class BukuController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +15,8 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $bukus = Buku::with('rak')->get();
-        return view('dashboard.buku.index',compact('bukus'));
+        $currentUser = Auth::user();
+        return view('dashboard.user.index',compact('currentUser'));
     }
 
     /**
@@ -25,7 +26,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        return view('dashboard.buku.create');
+        //
     }
 
     /**
@@ -36,26 +37,16 @@ class BukuController extends Controller
      */
     public function store(Request $request)
     {
-        Buku::create([
-            'judul' => $request->judul,
-            'isbn' => $request->isbn,
-            'pengarang' => $request->pengarang,
-            'penerbit' => $request->penerbit,
-            'tahun_terbit' => $request->tahun_terbit,
-            'stok' => $request->stok,
-            'cover' => $request->cover,
-            'rak_id' => $request->rak_id,
-        ]);
-        return redirect(route('buku.index'));
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Buku  $buku
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Buku $buku)
+    public function show($id)
     {
         //
     }
@@ -63,10 +54,10 @@ class BukuController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Buku  $buku
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Buku $buku)
+    public function edit($id)
     {
         //
     }
@@ -75,10 +66,10 @@ class BukuController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Buku  $buku
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -86,10 +77,10 @@ class BukuController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Buku  $buku
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Buku $buku)
+    public function destroy($id)
     {
         //
     }
