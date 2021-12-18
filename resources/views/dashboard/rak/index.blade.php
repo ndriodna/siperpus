@@ -8,7 +8,7 @@
     <label class="btn btn-md btn-primary modal-button" for="add-modal"><i data-feather="plus-circle" class="mr-2"></i>Tambah Rak</label>
   </div>
   <div class="overflow-x-auto p-6 ">
-    <table class="table w-full table-compact">
+    <table class="table w-full">
       <thead>
         <tr>
           <th>Nama Rak</th>
@@ -18,13 +18,14 @@
       <tbody>
         @foreach($raks as $rak)
         <tr>
-          <td>{{$rak->nama}}</td>
+          <td><a href="{{route('rak.show',$rak->id)}}">{{$rak->nama}}</a></td>
           <td colspan="2">
-            <form action="#" method="POST">
+            <form action="{{route('rak.destroy',$rak->id)}}" method="POST">
               @csrf
               @method('DELETE')
               <div class="btn-group">
-                <button type="submit" class="btn btn-md btn-error"><i data-feather="trash-2"></i></button>
+              <a href="{{route('rak.edit',$rak->id)}}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
+                <button type="submit" class="btn btn-sm btn-error"><i data-feather="trash-2"></i></button>
               </div>
             </form>
           </td>          
@@ -34,25 +35,25 @@
     </table>
   </div>
 
- <input type="checkbox" id="add-modal" class="modal-toggle">
-    {{-- add modal --}}
-    <div class="modal overflow-y-auto grid -mr-80">
-      <div class="modal-box my-6 w-screen">
-        <span class="text-xl font-bold">Tambah Rak</span>
-          <form action="{{route('rak.store')}}" method="POST">
-            @csrf
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Nama Rak</span>
-            </label>
-            <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
-          </div>
-        <div class="modal-action">
-            <button type="submit" class="btn btn-primary">Simpan</button>
-          <label for="add-modal" class="btn btn-error">Tutup</label>
-          </form>
+  <input type="checkbox" id="add-modal" class="modal-toggle">
+  {{-- add modal --}}
+  <div class="modal overflow-y-auto grid -mr-80">
+    <div class="modal-box my-6 w-screen">
+      <span class="text-xl font-bold">Tambah Rak</span>
+      <form action="{{route('rak.store')}}" method="POST">
+        @csrf
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Nama Rak</span>
+          </label>
+          <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
         </div>
+        <div class="modal-action">
+          <button type="submit" class="btn btn-primary">Simpan</button>
+          <label for="add-modal" class="btn btn-error">Tutup</label>
+        </form>
       </div>
     </div>
+  </div>
 
 </x-app-layout>

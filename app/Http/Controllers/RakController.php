@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rak;
+use App\Models\Buku;
 use Illuminate\Http\Request;
 
 class RakController extends Controller
@@ -16,7 +17,7 @@ class RakController extends Controller
     {
       $raks = Rak::get();
       return view('dashboard.rak.index',compact('raks'));
-    }
+  }
 
     /**
      * Show the form for creating a new resource.
@@ -38,12 +39,12 @@ class RakController extends Controller
     {
       $request->validate([
         'nama' => 'required|string'
-      ]);
+    ]);
       Rak::create([
         'nama' => $request->nama
-      ]);
+    ]);
       return redirect(route('rak.index'));
-    }
+  }
 
     /**
      * Display the specified resource.
@@ -53,7 +54,8 @@ class RakController extends Controller
      */
     public function show(Rak $rak)
     {
-        //
+        $rak->with('buku');
+        return view('dashboard.rak.show',compact('rak'));
     }
 
     /**
@@ -64,7 +66,7 @@ class RakController extends Controller
      */
     public function edit(Rak $rak)
     {
-        //
+        return view('dashboard.rak.edit',compact('rak'));
     }
 
     /**
@@ -76,7 +78,13 @@ class RakController extends Controller
      */
     public function update(Request $request, Rak $rak)
     {
-        //
+        $request->validate([
+            'nama' => 'required|string'
+        ]);
+        $rak->update([
+            'nama' => $request->nama
+        ]);
+        return redirect(route('rak.index'));
     }
 
     /**
@@ -87,6 +95,7 @@ class RakController extends Controller
      */
     public function destroy(Rak $rak)
     {
-        //
+        $rak->delete();
+        return redirect('dashboard.rak.index');
     }
-  }
+}

@@ -20,7 +20,7 @@ class CreateBukusTable extends Migration
             $table->string("pengarang")->nullable();
             $table->string("penerbit")->nullable();
             $table->string("tahun_terbit")->nullable();
-            $table->string("stok");
+            $table->integer("stok");
             $table->string("cover")->nullable();
             $table->timestamps();
         });

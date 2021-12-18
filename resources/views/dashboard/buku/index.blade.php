@@ -7,46 +7,59 @@
   <div class="mx-auto py-4">
     <label class="btn btn-md btn-primary modal-button" for="add-modal"><i data-feather="plus-circle" class="mr-2"></i>Tambah Buku</label>
   </div>
-  <div class="overflow-x-auto p-6 ">
+  <div class="p-6 overflow-x-auto ">
+    <div class="w-1/4 pb-4">
+    <div class="relative">
+      <input type="text" name="search" placeholder="Search" class="input input-primary w-full">
+      <button class="absolute top-0 right-0 rounded-1-none btn btn-primary"><i data-feather="search"></i></button>
+    </div>
+    </div>
     <table class="table w-full table-compact">
       <thead>
         <tr>
           <th>Judul</th>
-          <th>isbn</th>
-          <th>pengarang</th>
-          <th>penerbit</th>
+          <th>ISBN</th>
+          <th>Pengarang</th>
+          <th>Penerbit</th>
           <th>Thn</th>
-          <th>stok</th>
-          <th>action</th>
+          <th>Stok</th>
+          <th>Rak</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         @foreach($bukus as $buku)
         <tr>
-          <td>{{$buku->judul}}</td>
+          <td class="flex flex-wrap">{{$buku->judul}}</td>
           <td>{{$buku->isbn}}</td>
           <td>{{$buku->pengarang}}</td>
           <td>{{$buku->penerbit}}</td>
-          <td>{{$buku->tahun_terbit}}</td>
+          <td>{{($buku->tahun_terbit)}}</td>
           <td>{{$buku->stok}}</td>
+          <td>{{$buku->rak->nama}}</td>
           <td colspan="2">
-            <form action="#" method="POST">
+            <form action="{{route('buku.destroy',$buku->id)}}" method="POST">
               @csrf
               @method('DELETE')
               <div class="btn-group">
-                <button type="submit" class="btn btn-md btn-error"><i data-feather="trash-2"></i></button>
+                <a href="{{route('buku.edit',$buku->id)}}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
+                <button type="submit" class="btn btn-sm btn-error"><i data-feather="trash-2"></i></button>
               </div>
             </form>
           </td>          
         </tr>
         @endforeach
+
       </tbody>
     </table>
+    <div class="py-4">
+        {{ $bukus->links() }}
+    </div>
   </div>
 
- <input type="checkbox" id="add-modal" class="modal-toggle">
     {{-- add modal --}}
-    <div class="modal overflow-y-auto grid -mr-80">
+ <input type="checkbox" id="add-modal" class="modal-toggle">
+    <div class="modal overflow-y-auto grid sm:mx-auto lg:-mr-80">
       <div class="modal-box my-6 w-screen">
         <span class="text-xl font-bold">Tambah Buku</span>
         <div>
@@ -80,7 +93,7 @@
             <label class="label">
               <span class="label-text">Tahun</span>
             </label>
-            <input type="month" class="input input-primary" name="tahun_terbit" placeholder="Masukan tahun terbit">
+            <input name="tahun_terbit" type="number" min="1990" max="2099" step="1" placeholder="ex: 2018" class="input input-primary" />
           </div>
           <div class="form-control">
             <label class="label">
@@ -98,9 +111,10 @@
             <label class="label">
               <span class="label-text">Rak</span>
             </label>
-            <select name="rak_id" id="">
-              @foreach($bukus as $data)
-              <option value="{{$data->rak->id}}">{{$data->rak->lokasi}}</option>
+            <select name="rak_id" id="" class="select select-bordered select-primary">
+              <option disabled selected>Pilih Rak Buku</option>
+              @foreach($raks as $rak)
+              <option value="{{$rak->id}}">{{$rak->nama}}</option>
               @endforeach
             </select>
           </div>
@@ -110,7 +124,5 @@
           </form>
           <label for="add-modal" class="btn btn-error">Tutup</label>
         </div>
-      </div>
-    </div>
 
 </x-app-layout>

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Rak;
 use Illuminate\Http\Request;
+use App\Http\Requests\BukuRequest;
 
 class BukuController extends Controller
 {
@@ -14,8 +16,9 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $bukus = Buku::with('rak')->get();
-        return view('dashboard.buku.index',compact('bukus'));
+        $bukus = Buku::with('rak')->paginate(20);
+        $raks = Rak::get();
+        return view('dashboard.buku.index',compact('bukus','raks'));
     }
 
     /**
@@ -34,18 +37,9 @@ class BukuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BukuRequest $request)
     {
-        Buku::create([
-            'judul' => $request->judul,
-            'isbn' => $request->isbn,
-            'pengarang' => $request->pengarang,
-            'penerbit' => $request->penerbit,
-            'tahun_terbit' => $request->tahun_terbit,
-            'stok' => $request->stok,
-            'cover' => $request->cover,
-            'rak_id' => $request->rak_id,
-        ]);
+        Buku::create($request->all());
         return redirect(route('buku.index'));
     }
 
@@ -57,7 +51,7 @@ class BukuController extends Controller
      */
     public function show(Buku $buku)
     {
-        //
+        return view('dashboard.buku.show',compact('buku'));
     }
 
     /**
@@ -68,7 +62,8 @@ class BukuController extends Controller
      */
     public function edit(Buku $buku)
     {
-        //
+        $raks = Rak::get();
+        return view('dashboard.buku.edit',compact('buku','raks'));
     }
 
     /**
@@ -78,9 +73,10 @@ class BukuController extends Controller
      * @param  \App\Models\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(BukuRequest $request, Buku $buku)
     {
-        //
+        $buku->update($request->all());
+        return redirect(route('buku.index'));
     }
 
     /**
@@ -91,6 +87,7 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
-        //
+        $buku->delete();
+        return redirect(route('buku.index'));
     }
 }

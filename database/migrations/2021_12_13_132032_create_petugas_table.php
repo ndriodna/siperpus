@@ -17,11 +17,11 @@ class CreatePetugasTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')
             ->onDelete('cascade');;
-            $table->string("nama");
-            $table->enum("jk",['L','P']);
-            $table->string("jabatan");
-            $table->string("telp")->nullable();
-            $table->string("alamat")->nullable();
+            $table->string('nama');
+            $table->enum('jk',['L','P']);
+            $table->string('jabatan')->nullable();
+            $table->string('telp')->nullable();
+            $table->text('alamat')->nullable();
             $table->timestamps();
         });
     }
