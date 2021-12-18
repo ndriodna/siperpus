@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Member;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -14,7 +15,9 @@ class MemberController extends Controller
      */
     public function index()
     {
-        return view('dashboard.member.index');
+        $members = Member::with('user')->paginate(10);
+        $users = User::get();
+        return view('dashboard.member.index',compact('members','users'));
     }
 
     /**
