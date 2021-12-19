@@ -16,7 +16,9 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $bukus = Buku::with('rak')->paginate(20);
+        $bukus = Buku::with('rak')->when(request()->q, function($bukus){
+            $bukus = $bukus->where('judul','like', '%'. request()->q .'%');
+        })->paginate(20);
         $raks = Rak::get();
         return view('dashboard.buku.index',compact('bukus','raks'));
     }
