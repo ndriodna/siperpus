@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Member;
-use App\Models\Petugas;
+use App\Models\User;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $currentUser = Auth::user();
-        return view('dashboard.user.index',compact('currentUser'));
+        $users = User::when(request()->q, function($users){
+            $users = $users->where('name','like', '%'. request()->q .'%');
+        })->paginate(20);
+        return view('dashboard.user.index',compact('users'));
     }
 
     /**
@@ -28,36 +30,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // cek user yang sedang login apakah levelnya tidak sama dengan 'member'
-        if(auth::user()->level != 'member'){
-            // check tabel petugas 'user_id' sudah ada data atau belum
-            Petugas::updateOrCreate([
-                'user_id' => auth::id(),
-            ],
-            // jika sudah ada data lakukan update, jika belum tambah data baru beserta 'user_id'
-            [
-                'nama' => $request->nama,
-                'jk' => $request->jk,
-                'jabatan' => $request->jabatan,
-                'telp' => $request->telp,
-                'alamat' => $request->alamat,
-                'created_at' => now(),
-            ]
-        );
-        }else{
+       
+    }
 
-            Member::updateOrCreate([
-                'user_id' => auth::id()
-            ], [
-                'nama' => $request->nama,
-                'nim' => $request->nim,
-                'jk' => $request->jk,
-                'jurusan' => $request->jurusan,
-                'telp' => $request->telp,
-                'alamat' => $request->alamat,
-                'created_at' => now()
-            ]);
-        }
+    public function update(Request $request, User $user)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+        ]);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
         return back();
     }
 }

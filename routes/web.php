@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PetugasController;
@@ -21,7 +22,7 @@ use App\Http\Controllers\RakController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('landing.index');
 });
 
 Route::get('/dashboard', function () {
@@ -29,7 +30,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function(){
-    Route::resource('user',UserController::class)->only(['index', 'store']);
+    Route::resource('user',UserController::class);
+    Route::resource('profile',ProfileController::class)->only(['index','store']);
     Route::resource('buku',BukuController::class);
     Route::resource('rak',RakController::class);
     Route::resource('member',MemberController::class);

@@ -41,7 +41,7 @@ class BukuController extends Controller
      */
     public function store(BukuRequest $request)
     {
-        Buku::create($request->all());
+        Buku::create($request->validated());
         return redirect(route('buku.index'));
     }
 
