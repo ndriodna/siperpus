@@ -36,7 +36,7 @@
           <label class="label">
             <span class="label-text">Tahun</span>
           </label>
-          <input name="tahun_terbit" type="number" min="1990" max="2099" step="1" value="{{$buku->tahun_terbit}}" />
+          <input class="input-primary input" name="tahun_terbit" type="number" min="1990" max="2099" step="1" value="{{$buku->tahun_terbit}}" />
         </div>
         <div class="form-control">
           <label class="label">

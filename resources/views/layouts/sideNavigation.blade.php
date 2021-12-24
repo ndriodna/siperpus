@@ -3,8 +3,10 @@
 	<div class="mx-auto flex">
 		<div class="flex items-center flex-none"><a href="/" aria-label="Homepage"
 			class="px-2 flex-0 btn btn-ghost md:px-4 nuxt-link-active">
-			<div class="inline-block text-3xl font-title text-primary"><span class="lowercase">si</span><span
-				class="uppercase text-base-content">Perpus</span></div>
+			<span class="text-lg font-bold">
+      <div class="inline-block text-3xl font-title text-primary"><span class="uppercase">perpus</span><span
+        class="uppercase text-error">mulia</span></div>
+      </span>
 			</a></div>
 		</a>
 	</div>

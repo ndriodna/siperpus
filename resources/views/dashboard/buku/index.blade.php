@@ -12,7 +12,7 @@
     </label>
   </div>
   @endif
-  <div class="p-6 overflow-x-auto ">
+  <div class="p-6">
     <div class="w-1/4 pb-4">
       <div class="relative">
         <form action="{{ route('buku.index') }}" method="get">
@@ -24,23 +24,24 @@
         </form>
       </div>
     </div>
-    <table class="table w-full table-compact">
+    <div class="overflow-x-auto ">
+    <table class="table-fixed w-full table-compact">
       <thead>
         <tr>
-          <th>Judul</th>
-          <th>ISBN</th>
-          <th>Pengarang</th>
-          <th>Penerbit</th>
-          <th>Thn</th>
-          <th>Stok</th>
-          <th>Rak</th>
-          <th>Action</th>
+          <th class="w-10/12">Judul</th>
+          <th class="w-1/2">ISBN</th>
+          <th class="w-1/2">Pengarang</th>
+          <th class="w-1/2">Penerbit</th>
+          <th class="w-1/4">Thn</th>
+          <th class="w-1/4">Stok</th>
+          <th class="w-1/4">Rak</th>
+          <th class="w-1/2">Action</th>
         </tr>
       </thead>
       <tbody>
         @foreach ($bukus as $buku)
         <tr>
-          <td class="flex flex-wrap">{{ $buku->judul }}</td>
+          <td>{{ $buku->judul }}</td>
           <td>{{ $buku->isbn }}</td>
           <td>{{ $buku->pengarang }}</td>
           <td>{{ $buku->penerbit }}</td>
@@ -52,28 +53,19 @@
             <form action="{{ route('buku.destroy', $buku->id) }}" method="POST">
               @csrf
               @method('DELETE')
-              <div class="btn-group">
                 <a href="{{ route('buku.edit', $buku->id) }}" class="btn btn-sm btn-warning "><i
                   data-feather="edit"></i></a>
                   <button type="submit" class="btn btn-sm btn-error"><i
                     data-feather="trash-2"></i></button>
-                  </div>
                 </form>
               </td>
               @endif
-                 @if(Auth::user()->level == 'member')
-              <td>
-                <form action="#" method="post">
-                  @csrf
-                  <button class="btn btn-md btn-success" type="submit">Pinjam</button>
-                </form>
-              </td>
-                @endif
             </tr>
             @endforeach
 
           </tbody>
         </table>
+      </div>
         <div class="py-4">
           {{ $bukus->links() }}
         </div>

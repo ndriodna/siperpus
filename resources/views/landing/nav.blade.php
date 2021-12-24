@@ -1,4 +1,4 @@
-<div class="navbar sticky inset-x-0 top-0 z-50 shadow-lg bg-base-200 text-neutral rounded-box m-6 px-12">
+<div class="navbar sticky inset-x-0 top-0 z-50 shadow-lg bg-base-100 text-neutral rounded-box m-6 px-12">
   <div class="flex-1 px-2 mx-2 hidden lg:flex">
     <span class="text-lg font-bold">
       <div class="inline-block text-3xl font-title text-primary"><span class="uppercase">perpus</span><span

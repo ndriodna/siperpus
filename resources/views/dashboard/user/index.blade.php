@@ -18,13 +18,13 @@
         </form>
       </div>
     </div>
-    <table class="table w-full table-compact">
+    <table class="table table-fixed w-full table-compact">
       <thead>
         <tr>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Action</th>
+          <th class="w-1/2">Username</th>
+          <th class="w-1/2">Email</th>
+          <th class="w-1/2">Role</th>
+          <th class="w-1/2">Action</th>
         </tr>
       </thead>
       <tbody>

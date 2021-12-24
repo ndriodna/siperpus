@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -13,7 +14,8 @@ class LandingController extends Controller
      */
     public function index()
     {
-        //
+        $bukus = Buku::inRandomOrder()->paginate(8);
+        return view('landing.index',compact('bukus'));
     }
 
     /**
@@ -45,7 +47,8 @@ class LandingController extends Controller
      */
     public function show($id)
     {
-        //
+        $buku = Buku::find($id);
+        return view('landing.show',compact('buku'));
     }
 
     /**

@@ -16,16 +16,16 @@
   <!-- Scripts -->
   <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
-<body>
+<body class="bg-base-200">
   <div class="drawer drawer-mobile drawer-end">
     <input id="sidenav-mobile" type="checkbox" class="drawer-toggle">
     <main class="drawer-content">
       @include('landing.nav')
-      <div class="max-w-screen mx-auto px-12">
+      <div class="max-w-screen mx-auto px-12 py-12">
             @yield('content')
       </div>
+  @include('landing.footer')
     </main>
-
     {{-- side nav for mobile --}}
     <div class="drawer-side ">
       <label for="sidenav-mobile" class="drawer-overlay"></label>

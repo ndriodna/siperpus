@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BukuController;
@@ -20,10 +21,8 @@ use App\Http\Controllers\RakController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('landing.index');
-});
+Route::get('/',[LandingController::class,'index']);
+Route::get('/buku/{id}',[LandingController::class,'show'])->name('landing.show');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
