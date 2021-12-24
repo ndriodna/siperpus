@@ -39,9 +39,11 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email',
         ]);
+        $password = !empty($request->password) ? bcrypt($request->password) : $user->password;
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
+            'password' => $password,
         ]);
         return back();
     }

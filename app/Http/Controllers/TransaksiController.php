@@ -14,7 +14,8 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        return view('dashboard.transaksi.index');
+        $transaksis = Transaksi::with('member','petugas','buku')->paginate(10);
+        return view('dashboard.transaksi.index',compact('transaksis'));
     }
 
     /**

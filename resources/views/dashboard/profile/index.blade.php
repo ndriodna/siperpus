@@ -20,6 +20,12 @@
         </label>
         <input type="mail" name="email" class="input input-primary" value="{{ $currentUser->email }}">
       </div>
+      <div class="form-control my-2">
+        <label class="label">
+          <span class="label-text">Password</span>
+        </label>
+        <input type="password" name="password" class="input input-primary">
+      </div>
       <div class="py-2">
         <button class="btn btn-warning">Update User</button>
       </div>
