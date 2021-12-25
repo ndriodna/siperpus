@@ -14,7 +14,9 @@ class LandingController extends Controller
      */
     public function index()
     {
-        $bukus = Buku::inRandomOrder()->paginate(8);
+        $bukus = Buku::inRandomOrder()->when(request()->search, function($bukus){
+            $bukus = $bukus->where('judul','like', '%' . request()->search.'%');
+        })->paginate(8);
         return view('landing.index',compact('bukus'));
     }
 

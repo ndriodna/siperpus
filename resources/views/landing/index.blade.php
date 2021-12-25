@@ -12,8 +12,8 @@
 
 <div class="mx-auto py-12">
 	<div  class="relative">
-	<form action="#" class="mx-auto">
-	<input type="text" class="input input-bordered input-primary w-full" placeholder="Cari Judul">
+	<form action="{{route('landing.index')}}" method="get" class="mx-auto">
+	<input type="text" class="input input-bordered input-primary w-full" placeholder="Cari Judul" name="search" value="{{request()->search}}">
 	<button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
 		<i data-feather="search"></i>
 	</button>

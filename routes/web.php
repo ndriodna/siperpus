@@ -21,7 +21,7 @@ use App\Http\Controllers\RakController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/',[LandingController::class,'index']);
+Route::get('/',[LandingController::class,'index'])->name('landing.index');
 Route::get('/buku/{id}',[LandingController::class,'show'])->name('landing.show');
 
 Route::get('/dashboard', function () {

@@ -25,6 +25,9 @@
           <span class="label-text">Password</span>
         </label>
         <input type="password" name="password" class="input input-primary">
+        <label class="label">
+          <span class="label-text-alt text-error">kosongkan jika tidak merubah password</span>
+        </label>
       </div>
       <div class="py-2">
         <button class="btn btn-warning">Update User</button>

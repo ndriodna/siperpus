@@ -44,8 +44,8 @@
               <form action="{{ route('transaksi.destroy', $transaksi->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="btn btn-sm btn-warning "><i
-                  data-feather="edit"></i></a>
+                <a href="{{ route('transaksi.show', $transaksi->id) }}" class="btn btn-sm btn-primary "><i data-feather="eye"></i></a>
+                <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
                   <button type="submit" class="btn btn-sm btn-error"><i
                     data-feather="trash-2"></i></button>
                   </form>
