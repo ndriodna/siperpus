@@ -28,13 +28,19 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::middleware(['auth'])->prefix('dashboard')->group(function(){
+Route::middleware(['auth','checkRole'])->prefix('dashboard')->group(function(){
     Route::resource('user',UserController::class);
-    Route::resource('profile',ProfileController::class)->only(['index','store']);
     Route::resource('buku',BukuController::class);
-    Route::resource('rak',RakController::class);
+    Route::resource('rak',RakController::class)->except(['create','update']);
     Route::resource('member',MemberController::class);
     Route::resource('petugas',PetugasController::class);
+    Route::put('transaksi/verifikasi/{id}', [TransaksiController::class, 'verifikasi'])->name('transaksi.verifikasi');
+});
+
+Route::middleware(['auth'])->prefix('dashboard')->group(function(){
+    Route::resource('profile',ProfileController::class)->only(['index','store']);
+    Route::get('pinjam/{slug}', [TransaksiController::class, 'pinjam'])->name('transaksi.pinjam');
+    Route::put('transaksi/kembali/{id}', [TransaksiController::class, 'kembali'])->name('transaksi.kembali');
     Route::resource('transaksi',TransaksiController::class);
 });
 

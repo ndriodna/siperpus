@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rak;
 use App\Models\Buku;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RakController extends Controller
 {
@@ -20,16 +21,6 @@ class RakController extends Controller
   }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -37,13 +28,21 @@ class RakController extends Controller
      */
     public function store(Request $request)
     {
-      $request->validate([
-        'nama' => 'required|string'
+
+    $validator = Validator::make($request->all(), [
+        'nama' => 'required',
+    ],[
+        'nama.required' => 'field nama tidak boleh kosong'
     ]);
+
+    if ($validator->fails()) {
+        return back()->with('toast_error', $validator->messages()->all()[0]);
+    }
+
       Rak::create([
         'nama' => $request->nama
     ]);
-      return redirect(route('rak.index'));
+      return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Ditambahkan!');
   }
 
     /**
@@ -56,17 +55,6 @@ class RakController extends Controller
     {
         $rak->with('buku');
         return view('dashboard.rak.show',compact('rak'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Rak  $rak
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Rak $rak)
-    {
-        return view('dashboard.rak.edit',compact('rak'));
     }
 
     /**
@@ -96,6 +84,6 @@ class RakController extends Controller
     public function destroy(Rak $rak)
     {
         $rak->delete();
-        return redirect('dashboard.rak.index');
+        return back()->with('toast_success', 'Data Berhasil dihapus!');
     }
 }

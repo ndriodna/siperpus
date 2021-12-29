@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
         // \App\Models\Buku::factory(20)->create();
         $this->call([
             UserSeeder::class,
+            RakSeeder::class,
+            BukuSeeder::class,
         ]);
     }
 }

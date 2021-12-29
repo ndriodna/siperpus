@@ -48,5 +48,6 @@ class UserSeeder extends Seeder
         ];
 
         User::insert($users);
+
     }
 }
