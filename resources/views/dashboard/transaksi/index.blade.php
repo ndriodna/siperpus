@@ -22,6 +22,7 @@
                 <tr>
                     <th class="w-1/2">Judul</th>
                     <th class="w-1/2">Peminjam</th>
+                    <th class="w-1/2">Petugas</th>
                     <th class="w-1/2">TGL Pinjam</th>
                     <th class="w-1/2">TGL Kembali</th>
                     <th class="w-1/2">Denda</th>
@@ -34,11 +35,12 @@
                     <tr>
                         <td>{{ $transaksi->buku->judul }}</td>
                         <td>{{ $transaksi->member->nama }}</td>
+                        <td>{{ $transaksi->petugas->nama ?? '' }}</td>
                         <td>{{ $transaksi->tgl_pinjam }}</td>
                         <td>{{ $transaksi->tgl_kembali }}</td>
                         <td>{{ $transaksi->denda ?? 'Rp. 0' }}</td>
                         <td><span class="badge badge-warning">{{ $transaksi->status }}</span></td>
-                        @if ($transaksi->status == 'menunggu verifikasi')
+                        @if ($transaksi->status == 'menunggu verifikasi' && Auth::user()->level == 'petugas')
                             <td colspan="2" class="flex justify-end">
                                 <form action="{{ route('transaksi.verifikasi', $transaksi->id) }}" method="POST">
                                     @csrf

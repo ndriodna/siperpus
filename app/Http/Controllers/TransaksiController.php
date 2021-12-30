@@ -132,7 +132,7 @@ class TransaksiController extends Controller
 
         $transaksi->update([
             'status' => 'Pinjam',
-            'petugas_id' => Auth::user()->petugas->user_id,
+            'petugas_id' => Auth::user()->petugas->id,
         ]);
 
         mail::to($transaksi->member->user->email)->send(new VerifikasiBuku($transaksi));
