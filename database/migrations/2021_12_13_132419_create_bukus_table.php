@@ -16,11 +16,12 @@ class CreateBukusTable extends Migration
         Schema::create('bukus', function (Blueprint $table) {
             $table->id();
             $table->string("judul");
+            $table->string('slug');
             $table->string("isbn")->nullable();
             $table->string("pengarang")->nullable();
             $table->string("penerbit")->nullable();
             $table->string("tahun_terbit")->nullable();
-            $table->string("stok");
+            $table->integer("stok");
             $table->string("cover")->nullable();
             $table->timestamps();
         });

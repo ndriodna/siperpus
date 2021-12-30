@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Petugas;
+use App\Models\User;
+use App\Http\Requests\PetugasRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PetugasController extends Controller
@@ -14,7 +17,9 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        return view('dashboard.petugas.index');
+        $petugass = Petugas::with('user')->paginate(10);
+        $users = User::get();
+        return view('dashboard.petugas.index',compact('petugass','users'));
     }
 
     /**
@@ -33,9 +38,10 @@ class PetugasController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PetugasRequest $request)
     {
-        //
+        Petugas::create($request->all());
+        return redirect(route('petugas.index'));
     }
 
     /**

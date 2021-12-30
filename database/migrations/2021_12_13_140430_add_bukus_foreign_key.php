@@ -14,7 +14,8 @@ class AddBukusForeignKey extends Migration
     public function up()
     {
         Schema::table('bukus', function (Blueprint $table) {
-            $table->foreignId('rak_id')->constrained('raks');
+            $table->foreignId('rak_id')->constrained('raks')
+                  ->cascadeOnDelete()->cascadeOnUpdate()->nullable();
         });
     }
 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
+use App\Models\Rak;
 use Illuminate\Http\Request;
+use App\Http\Requests\BukuRequest;
 
 class BukuController extends Controller
 {
@@ -14,7 +16,11 @@ class BukuController extends Controller
      */
     public function index()
     {
-        return view('dashboard.buku.index');
+        $bukus = Buku::with('rak')->when(request()->q, function($bukus){
+            $bukus = $bukus->where('judul','like', '%'. request()->q .'%');
+        })->paginate(20);
+        $raks = Rak::get();
+        return view('dashboard.buku.index',compact('bukus','raks'));
     }
 
     /**
@@ -24,7 +30,7 @@ class BukuController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.buku.create');
     }
 
     /**
@@ -33,9 +39,10 @@ class BukuController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BukuRequest $request)
     {
-        //
+        Buku::create($request->validated());
+        return redirect(route('buku.index'));
     }
 
     /**
@@ -46,7 +53,7 @@ class BukuController extends Controller
      */
     public function show(Buku $buku)
     {
-        //
+        return view('dashboard.buku.show',compact('buku'));
     }
 
     /**
@@ -57,7 +64,8 @@ class BukuController extends Controller
      */
     public function edit(Buku $buku)
     {
-        //
+        $raks = Rak::get();
+        return view('dashboard.buku.edit',compact('buku','raks'));
     }
 
     /**
@@ -67,9 +75,10 @@ class BukuController extends Controller
      * @param  \App\Models\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Buku $buku)
+    public function update(BukuRequest $request, Buku $buku)
     {
-        //
+        $buku->update($request->all());
+        return redirect(route('buku.index'));
     }
 
     /**
@@ -80,6 +89,7 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
-        //
+        $buku->delete();
+        return redirect(route('buku.index'));
     }
 }

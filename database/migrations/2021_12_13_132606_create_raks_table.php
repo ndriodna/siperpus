@@ -15,7 +15,7 @@ class CreateRaksTable extends Migration
     {
         Schema::create('raks', function (Blueprint $table) {
             $table->id();
-            $table->string("lokasi")->nullable();
+            $table->string('nama')->nullable();
             $table->timestamps();
         });
     }

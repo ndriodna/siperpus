@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'level'
     ];
 
     /**
@@ -41,4 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // relations
+
+    public function petugas()
+    {
+        return $this->hasOne(Petugas::class);
+    }
+
+    public function member()
+    {
+        return $this->hasOne(Member::class);
+    }
 }

@@ -17,10 +17,10 @@ class CreateMembersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')
             ->onDelete('cascade');;
-            $table->integer("nim");
-            $table->string("nama");
-            $table->enum("jk",['L','P']);
-            $table->string("jurusan");
+            $table->integer("nim")->nullable();
+            $table->string("nama")->nullable();
+            $table->enum("jk",['L','P'])->nullable();
+            $table->string("jurusan")->nullable();
             $table->string("telp")->nullable();
             $table->string("alamat")->nullable();
             $table->timestamps();

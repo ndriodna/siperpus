@@ -1,32 +1,23 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 module.exports = {
-    purge: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
-    ],
-
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
-            },
-        },
+  purge: [
+  './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
+  './storage/framework/views/*.php',
+  './resources/**/*.blade.php',
+  ],
+  darkMode: false, // or 'media' or 'class'
+  theme: {
+    extend: {},
+  },
+  variants: {
+    extend: {
+      opacity: ['disabled'],
     },
+  },
+  plugins: [
+   require('daisyui'),
+  ],
 
-    variants: {
-        extend: {
-            opacity: ['disabled'],
-        },
-    },
-
-    plugins: [
-    require('@tailwindcss/forms'),
-    require('daisyui'),
-    ],
-
-    // config (optional)
+  // config (optional)
     daisyui: {
       styled: true,
       themes: true,
@@ -35,4 +26,4 @@ module.exports = {
       logs: true,
       rtl: false,
     },
-};
+}
