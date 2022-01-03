@@ -35,12 +35,6 @@
                 </div>
             </div>
             <input type="hidden" name="buku_id" value="{{ $buku->id }}">
-            <div class="form-control my-2">
-                <label class="label">
-                    <span class="label-text">Tanggal Pinjam</span>
-                </label>
-                <input type="date" name="tgl_pinjam" class="input input-primary">
-            </div>
             <div class=" form-control my-2">
                 <label class="label">
                     <span class="label-text">Tanggal Kembali</span>

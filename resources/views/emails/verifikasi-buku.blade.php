@@ -1,5 +1,5 @@
 @component('mail::message')
-    # {{ $transaksi->invoice }}
+    # Halo, {{ $transaksi->member->nama }}
 
     Data diri peminjaman anda telah berhasil kami verifikasi,
     silahkan ambil buku diperpustakaan kampus PSDKU-Samarinda.

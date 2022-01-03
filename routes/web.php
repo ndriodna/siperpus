@@ -29,6 +29,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware(['auth','checkRole'])->prefix('dashboard')->group(function(){
+    Route::put('role/{id}', [PetugasController::class, 'role'])->name('role.petugas');
     Route::resource('user',UserController::class);
     Route::resource('buku',BukuController::class);
     Route::resource('rak',RakController::class)->except(['create','update']);

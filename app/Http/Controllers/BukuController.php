@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Buku;
 use App\Models\Rak;
+use App\Models\Buku;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\BukuRequest;
 
@@ -41,8 +42,22 @@ class BukuController extends Controller
      */
     public function store(BukuRequest $request)
     {
-        Buku::create($request->validated());
-        return redirect(route('buku.index'));
+        // tampung semua request kedalam variabel
+        $data = $request->all();
+
+        // ubah request judul menjadi slug
+        $data['slug'] =  Str::slug($request->judul, '-');
+
+        // request file cover
+        $cover = $request->file('cover');
+        // simpan request cover kedalam folder public/covers dengan nama sesuai nama file
+        $cover->storeAs('public/covers/', $cover->hashName());
+        // tukar array cover dengan data request cover kemudian simpan ke db, hanya nama file saja tanpa path
+        $data ['cover'] = $cover->hashName();
+
+        Buku::create($data);
+
+        return redirect(route('buku.index'))->with('toast_success','Data Buku Berhasil Ditambahkan!');
     }
 
     /**

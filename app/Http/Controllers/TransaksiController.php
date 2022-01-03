@@ -27,22 +27,13 @@ class TransaksiController extends Controller
         }else{
             $transaksis_member = Transaksi::with('member','petugas','buku')
                                 ->where('member_id', auth::user()->member->id)->paginate(10);
+
             if($transaksis_member->count() <= 0){
                 return view('dashboard.transaksi.hero', compact('transaksis_member'));
             }else{
                 return view('dashboard.transaksi.member', compact('transaksis_member'));
             }
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -53,110 +44,85 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $length = 10;
-        $random = '';
-
-        for($i = 0; $i < $length; $i++){
-            $random .= rand(0,1) ? rand(0,9) : chr(rand(ord('a'), ord('z')));
-        }
-
-        $invoice = 'UM-'.Str::upper($random);
-
+        // insert data kedalam database
         Transaksi::create([
-            'invoice' => $invoice,
-            'tgl_pinjam' => $request->tgl_pinjam,
+            'tgl_pinjam' => now(),
             'tgl_kembali' => $request->tgl_kembali,
             'buku_id' => $request->buku_id,
             'member_id' => Auth::user()->member->id,
             'status' => 'menunggu verifikasi',
         ]);
 
-
+        //
         return redirect(route('transaksi.index'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Transaksi $transaksi)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Transaksi $transaksi)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Transaksi $transaksi)
-    {
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Transaksi  $transaksi
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Transaksi $transaksi)
-    {
-        //
     }
 
     public function pinjam(Request $request, $slug)
     {
+        // ambil data buku sesuai slug
         $buku = Buku::where('slug', $slug)->first();
+
+        // passing variabel buku kedalam view
         return view('dashboard.transaksi.create', compact('buku'));
     }
 
     public function verifikasi($id)
     {
+        // ambil data transaksi sesuai id
         $transaksi = Transaksi::findOrFail($id);
 
+        // update data transaksi
         $transaksi->update([
             'status' => 'Pinjam',
             'petugas_id' => Auth::user()->petugas->id,
         ]);
 
+        // kirim email sesuai email member dan kirim variabel transaksi
         mail::to($transaksi->member->user->email)->send(new VerifikasiBuku($transaksi));
 
         $transaksi->buku->where('id', $transaksi->buku_id)->update([
             'stok' => $transaksi->buku->stok - 1
         ]);
 
-        return back();
+        // kembali kehalaman yg sama dengan toast
+        return back()->with('toast_success', 'Buku Berhasil Diverifikasi!');
     }
 
     public function kembali($id)
     {
+        // ambil data transaksi berdasarkan user yang sedang login
         $transaksi = Transaksi::with('member','petugas','buku')
-        ->where('member_id', auth::user()->member->id)->findOrFail($id);
+                              ->where('member_id', auth::user()->member->id)->findOrFail($id);
 
-        $transaksi->update([
-            'status' => 'kembali'
-        ]);
+        // variabel yg menampung array
+        $data = [
+            'status' => 'kembali',
+            'denda' => 0,
+            'tgl_pengembalian' => now(),
+        ];
 
+        // buat tgl_kembali menjadi carbon
+        $tgl_kembali = Carbon::create($transaksi->tgl_kembali);
+
+        // check apakah tanggal kembali lebih kecil dari tanggal hari ini
+        if($tgl_kembali->lessThan((today()))){
+            // jika iya, hitung selesih dari tanggal kembali dengan hari ini
+            $denda = Carbon::create($transaksi->tgl_kembali)->diffInDays(today());
+            // setiap selisih di kalikan 1000
+            $denda *= 1000;
+            // masukan variabel denda kedalam varibel data
+            $data['denda'] = $denda;
+        }
+
+        // update data transaksi menggunakan variabel $data
+        $transaksi->update($data);
+
+        // update stok buku berdasarkan id
         $transaksi->buku->where('id', $transaksi->buku_id)->update([
-            'stok' => $transaksi->buku->stok ++
+            'stok' => $transaksi->buku->stok + 1
         ]);
 
+        // kembali kehalaman yg sama dengan toast success
         return back()->with('toast_success', 'Buku Berhasil Dikembalikan!');
     }
 

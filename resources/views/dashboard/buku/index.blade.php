@@ -77,7 +77,7 @@
         <div class="modal-box my-6 w-screen">
             <span class="text-xl font-bold">Tambah Buku</span>
             <div>
-                <form action="{{ route('buku.store') }}" method="POST">
+                <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-control">
                         <label class="label">

@@ -24,22 +24,26 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8 ">
             @foreach ($bukus as $buku)
-                <div class="card shadow-lg bg-base-100">
+                <div class="card text-center shadow-2xl">
                     <figure>
-                        <img src="{{ $buku->cover ? asset($buku->cover) : asset('cover-default.svg') }}" alt=""
-                            class="max-h-80">
+                        <img src="{{ $buku->cover }}" class="max-h-80">
                     </figure>
                     <div class="card-body">
-                        <div class="card-title text-center">{{ $buku->judul }}</div>
-                        <span class="text-gray-400 text-sm block">Penulis</span>
-                        <span>{{ $buku->pengarang }}</span>
-                        <span class="text-gray-400 text-sm">Penerbit</span>
-                        <span>{{ $buku->penerbit }}</span><span class="text-gray-400 text-sm">Tahun</span>
-                        <span>{{ $buku->tahun_terbit }}</span>
-                    </div>
-                    <div class="card-actions justify-end px-2">
-                        <a href="{{ route('transaksi.pinjam', $buku->judul) }}" class="btn btn-md btn-primary">Pinjam</a>
-                        <a href="{{ route('landing.show', $buku->id) }}" class="btn btn-md btn-ghost">Lihat Detail</a>
+                        <h2 class="card-title">{{ $buku->judul }}</h2>
+                        <div class="jutify-center">
+                            <span class="text-gray-400 text-sm block">Penulis</span>
+                            <span>{{ $buku->pengarang }}</span>
+                            <span class="text-gray-400 text-sm block">Penerbit</span>
+                            <span>{{ $buku->penerbit }}</span>
+                            <span class="text-gray-400 text-sm block">Tahun</span>
+                            <span>{{ $buku->tahun_terbit }}</span>
+                        </div>
+                        <div class="justify-center card-actions">
+                            <a href="{{ route('transaksi.pinjam', $buku->judul) }}"
+                                class="btn btn-md btn-primary text-white">Pinjam</a>
+                            <a href="{{ route('landing.show', $buku->id) }}" class="btn btn-md btn-ghost">Lihat
+                                Detail</a>
+                        </div>
                     </div>
                 </div>
             @endforeach

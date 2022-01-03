@@ -17,9 +17,11 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        $petugass = Petugas::with('user')->paginate(10);
-        $users = User::get();
-        return view('dashboard.petugas.index',compact('petugass','users'));
+        // ambil data user dengan member dimana levelnya != member, pecah 10 data per halaman
+        $users = User::with('member','petugas')->where('level', '!=', 'admin')->paginate(10);
+
+        // lempar variabel ke view
+        return view('dashboard.petugas.index',compact('users'));
     }
 
     /**
@@ -87,5 +89,27 @@ class PetugasController extends Controller
     public function destroy(Petugas $petugas)
     {
         //
+    }
+
+    public function role($id)
+    {
+        // cari data user berdasarakan id
+        $user = User::findOrFail($id);
+
+        // update data user ke level petugas berdasarkan id
+        $user->update([
+            'level' => 'petugas'
+        ]);
+
+        // buat data petugas berdasarakan id user
+        Petugas::create([
+            'user_id' => $id
+        ]);
+
+        // hapus data member berdasarkan id
+        $user->member->where('user_id', $id)->delete();
+
+        // kembali kehalaman sebelumnya dengan toast success
+        return back()->with('toast_success', 'Berhasil Melakukan Update Level Petugas');
     }
 }

@@ -38,17 +38,42 @@
                         <td>{{ $transaksi->petugas->nama ?? '' }}</td>
                         <td>{{ $transaksi->tgl_pinjam }}</td>
                         <td>{{ $transaksi->tgl_kembali }}</td>
-                        <td>{{ $transaksi->denda ?? 'Rp. 0' }}</td>
-                        <td><span class="badge badge-warning">{{ $transaksi->status }}</span></td>
+                        @if ($transaksi->status == 'kembali')
+                            <td>Rp. {{ $transaksi->denda }}</td>
+                        @else
+                            <td></td>
+                        @endif
+                        <td>
+                            @if ($transaksi->status == 'menunggu verifikasi')
+                                <span class="badge badge-warning">{{ $transaksi->status }}</span>
+                            @elseif($transaksi->status == 'pinjam')
+                                <span class="badge badge-success">{{ $transaksi->status }}</span>
+                            @else
+                                <span class="badge badge-info">{{ $transaksi->status }}</span>
+                            @endif
+                        </td>
                         @if ($transaksi->status == 'menunggu verifikasi' && Auth::user()->level == 'petugas')
                             <td colspan="2" class="flex justify-end">
-                                <form action="{{ route('transaksi.verifikasi', $transaksi->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-sm btn-primary">
-                                        <i data-feather="check"></i>
-                                    </button>
-                                </form>
+                                <label class="btn btn-sm btn-warning modal-button" for="modal{{ $transaksi->id }}">
+                                    <i data-feather="check"></i>
+                                </label>
+                                <input type="checkbox" id="modal{{ $transaksi->id }}" class="modal-toggle">
+                                <div class="modal">
+                                    <div class="modal-box">
+                                        <p class="text-2xl">Verifikasi buku sekarang ?</p>
+                                        <div class="modal-action">
+                                            <form action="{{ route('transaksi.verifikasi', $transaksi->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-primary">Ya</button>
+                                            </form>
+                                            <label for="modal{{ $transaksi->id }}" class="btn">
+                                                Tidak
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         @endif
                     </tr>

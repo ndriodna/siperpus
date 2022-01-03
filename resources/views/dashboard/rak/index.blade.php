@@ -25,8 +25,6 @@
                                 @csrf
                                 @method('DELETE')
                                 <div class="btn-group flex justify-end">
-                                    {{-- <a href="{{ route('rak.edit', $rak->id) }}" class="btn btn-sm btn-warning "><i
-                                            data-feather="edit"></i></a> --}}
                                     <button type="submit" class="btn btn-sm btn-error"><i
                                             data-feather="trash-2"></i></button>
                                 </div>
