@@ -4,11 +4,11 @@
 
         <div class="card lg:card-side shadow-lg bg-base-100">
             <figure>
-                <img src="{{ $buku->cover ? asset($buku->cover) : asset('cover-default.svg') }}" alt=""
-                    class="max-h-fit">
+                <img src="{{ $buku->cover }}" alt=""
+                    class="max-h-96">
             </figure>
             <div class="card-body">
-                <span class="text-3xl font-medium">{{ $buku->judul }}</span>
+                <span class="text-2xl font-medium">{{ $buku->judul }}</span>
                 <span class="text-gray-600 py-2 underline italic">{{ $buku->pengarang }}</span>
                 <div class="my-4">
                     <section class="mb-2">
@@ -27,8 +27,8 @@
                 <div class="card-actions">
                     <form action="#">
                         <div data-tip="Stok : {{ $buku->stok }}" class="tooltip tooltip-bottom">
-                            <button type="submit" {{ $buku->stok > 0 ? '' : 'disabled' }}
-                                class="btn btn-primary">Pinjam</button>
+                            <a href="{{route('transaksi.pinjam',$buku->slug)}}" {{ $buku->stok > 0 ? '' : 'disabled' }}
+                                class="btn btn-primary">Pinjam</a>
                         </div>
                     </form>
                 </div>

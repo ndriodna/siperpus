@@ -45,6 +45,12 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $password,
         ]);
-        return back();
+        return back()->with('toast_success','Berhasil update User');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return back()->with('toast_success','Berhasil Menghapus User');
     }
 }

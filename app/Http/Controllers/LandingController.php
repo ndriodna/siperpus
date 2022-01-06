@@ -47,9 +47,9 @@ class LandingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $buku = Buku::find($id);
+        $buku = Buku::where('slug', $slug)->first();
         return view('landing.show',compact('buku'));
     }
 

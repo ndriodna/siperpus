@@ -9,10 +9,10 @@
             @csrf
             <div class="mx-auto px-12">
 
-                <div class="card lg:card-side shadow-lg bg-base-100">
+                <div class="card lg:card-side md:card-side shadow-lg bg-base-100">
                     <figure>
-                        <img src="{{ $buku->cover ? asset($buku->cover) : asset('cover-default.svg') }}" alt=""
-                            class="max-h-fit">
+                        <img src="{{ $buku->cover }}" alt=""
+                            class="max-h-80">
                     </figure>
                     <div class="card-body">
                         <span class="text-3xl font-medium">{{ $buku->judul }}</span>

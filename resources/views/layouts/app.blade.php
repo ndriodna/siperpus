@@ -40,10 +40,8 @@
 
             {{-- content --}}
             <div class="max-w-screen mx-auto">
-                <div class="card">
-                    <div class="card-body">
+                <div class="px-6 py-4">
                         {{ $slot }}
-                    </div>
                 </div>
             </div>
             @include('sweetalert::alert')

@@ -29,21 +29,21 @@ class RakController extends Controller
     public function store(Request $request)
     {
 
-    $validator = Validator::make($request->all(), [
-        'nama' => 'required',
-    ],[
-        'nama.required' => 'field nama tidak boleh kosong'
-    ]);
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+        ],[
+            'nama.required' => 'field nama tidak boleh kosong'
+        ]);
 
-    if ($validator->fails()) {
-        return back()->with('toast_error', $validator->messages()->all()[0]);
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0]);
+        }
+
+        Rak::create([
+            'nama' => $request->nama
+        ]);
+        return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Ditambahkan!');
     }
-
-      Rak::create([
-        'nama' => $request->nama
-    ]);
-      return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Ditambahkan!');
-  }
 
     /**
      * Display the specified resource.
@@ -72,7 +72,7 @@ class RakController extends Controller
         $rak->update([
             'nama' => $request->nama
         ]);
-        return redirect(route('rak.index'));
+        return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Diubah!');
     }
 
     /**

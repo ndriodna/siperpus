@@ -7,6 +7,7 @@ use App\Models\Buku;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Requests\BukuRequest;
+use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
 {
@@ -92,8 +93,22 @@ class BukuController extends Controller
      */
     public function update(BukuRequest $request, Buku $buku)
     {
-        $buku->update($request->all());
-        return redirect(route('buku.index'));
+        $data = $request->all();
+
+        $data['slug'] =  Str::slug($request->judul, '-');
+
+        if ($request->hasFile('cover')) {
+            $cover_old = $data['cover'];
+            Storage::disk('local')->delete('public/covers/'.basename($cover_old));
+
+            $cover = $request->file('cover');
+            $cover->storeAs('public/covers/', $cover->hashName());
+            $data ['cover'] = $cover->hashName();
+        $buku->update($data);
+        }else{
+        $buku->update($data);
+        }
+        return redirect(route('buku.index'))->with('toast_success','Data Buku Berhasil Diubah!');
     }
 
     /**
@@ -104,7 +119,12 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
+        if ($buku->cover) {
+        Storage::disk('local')->delete('public/covers/'.basename($buku->cover));
         $buku->delete();
-        return redirect(route('buku.index'));
+        }else{
+        $buku->delete();
+        }
+        return redirect(route('buku.index'))->with('toast_success','Berhasil Menghapus Buku!');
     }
 }
