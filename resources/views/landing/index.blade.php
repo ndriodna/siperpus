@@ -22,33 +22,31 @@
     </div>
   </div>
 
-  <div class="flex flex-col items-start">
-    <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8">
-      @foreach ($bukus as $buku)
-      <div class="card text-center shadow-2xl">
-        <figure>
-          <img src="{{ $buku->cover }}" class="max-h-72">
-        </figure>
-        <h2 class="card-title mt-4 -mb-4">{{ $buku->judul }}</h2>
-        <div class="card-body">
-          <div class="jutify-center">
-            <span class="text-gray-400 text-sm block">Penulis</span>
-            <span>{{ $buku->pengarang }}</span>
-            <span class="text-gray-400 text-sm block">Penerbit</span>
-            <span>{{ $buku->penerbit }}</span>
-            <span class="text-gray-400 text-sm block">Tahun</span>
-            <span>{{ $buku->tahun_terbit }}</span>
-          </div>
-          <div class="justify-center card-actions">
-            <a href="{{ route('transaksi.pinjam', $buku->slug) }}"
-              class="btn btn-md btn-primary text-white">Pinjam</a>
-              <a href="{{ route('landing.show', $buku->slug) }}" class="btn btn-md btn-ghost">Lihat
-              Detail</a>
-            </div>
+  <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-8">
+    @foreach ($bukus as $buku)
+    <div class="card text-center shadow-2xl">
+      <figure>
+        <img src="{{ $buku->cover }}" class="max-h-72">
+      </figure>
+      <h2 class="card-title mt-4 -mb-4">{{ $buku->judul }}</h2>
+      <div class="card-body">
+        <div class="jutify-center">
+          <span class="text-gray-400 text-sm block">Penulis</span>
+          <span>{{ $buku->pengarang }}</span>
+          <span class="text-gray-400 text-sm block">Penerbit</span>
+          <span>{{ $buku->penerbit }}</span>
+          <span class="text-gray-400 text-sm block">Tahun</span>
+          <span>{{ $buku->tahun_terbit }}</span>
+        </div>
+        <div class="justify-center card-actions">
+          <a href="{{ route('transaksi.pinjam', $buku->slug) }}"
+            class="btn btn-md btn-primary text-white">Pinjam</a>
+            <a href="{{ route('landing.show', $buku->slug) }}" class="btn btn-md btn-ghost">Lihat
+            Detail</a>
           </div>
         </div>
-        @endforeach
       </div>
+      @endforeach
     </div>
     <div class="px-2 py-4">
       {{ $bukus->links() }}
