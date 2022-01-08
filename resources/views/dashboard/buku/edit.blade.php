@@ -1,6 +1,6 @@
 <input type="checkbox" class="modal-toggle" id="modal{{$buku->id}}">
 <div class="modal overflow-y-auto grid sm:mx-auto lg:-mr-80">
-  <div class="modal-box my-6 w-screen">
+  <div class="modal-box w-screen">
     <h2 class="font-semibold text-xl text-content leading-tight">
       {{ __('Buku Edit') }} - {{$buku->judul }}
     </h2>

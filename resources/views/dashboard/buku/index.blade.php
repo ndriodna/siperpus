@@ -76,7 +76,7 @@
     {{-- add modal --}}
     <input type="checkbox" id="add-modal" class="modal-toggle">
     <div class="modal overflow-y-auto grid sm:mx-auto lg:-mr-80">
-      <div class="modal-box my-6 w-screen">
+      <div class="modal-box w-screen">
         <span class="text-xl font-bold">Tambah Buku</span>
         <div>
           <form action="{{ route('buku.store') }}" method="POST" enctype="multipart/form-data">

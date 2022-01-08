@@ -37,11 +37,11 @@
     <table class="w-full table-compact">
       <thead>
         <tr>
-          <th class="w-3/6">Judul</th>
+          <th class="w-2/6">Judul</th>
           <th class="w-2/6">Peminjam</th>
           <th class="w-3/6">Status</th>
-          <th class="w-2/6">Tgl Pinjam</th>
-          <th class="w-2/6"></th>
+          <th class="w-2/6">Tenggat</th>
+          <th class="w-1/6"></th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +65,7 @@
             <div class="badge badge-primary text-base">{{ $transaksi->member->nim }}</div> 
           </td>
           <td>{{  $transaksi->status }}</td>
-          <td class="text-center">{{ Carbon\Carbon::parse($transaksi->tgl_pinjam)->format('d/M/Y') }}</td>
+          <td class="text-center">{{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}</td>
           <td colspan="2" class="flex justify-end content-center">
             <label class="btn btn-sm btn-ghost btn-xs modal-button" for="modal{{ $transaksi->id }}">
               <span>Details</span>
@@ -74,7 +74,7 @@
         </tr>
         <input type="checkbox" id="modal{{ $transaksi->id }}" class="modal-toggle">
         <div class="modal overflow-y-auto grid lg:-mr-80 ">
-          <div class="modal-box lg:w-full md:w-full w-full max-w-2xl my-6">
+          <div class="modal-box lg:w-full md:w-full w-full max-w-2xl">
             <div class="card">
               <h2 class="card-title text-center">Detail Transaksi Peminjaman </h2>
               <div class="flex justify-center">
@@ -82,6 +82,7 @@
               </div>
               <div class="space-y-4">
                 <div class="text-center font-bold card-title my-4 px-12">{{$transaksi->buku->judul}}</div>
+                <div class="border-b-2 border-grey-600"></div>
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Peminjam</span></div>
                   <div class="text-lg w-full">{{$transaksi->member->nama}}</div>
@@ -96,23 +97,42 @@
                 </div>
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Status</span></div>
-                  <div class=" text-lg w-full"><span>{{ $transaksi->status }}</span></div>
-                </div>
+                  <div class=" text-lg w-full">
+                   @if ($transaksi->status == 'menunggu verifikasi')
+                   <span class="badge badge-warning">{{ $transaksi->status }}</span>
+                   @elseif($transaksi->status == 'pinjam')
+                   <span class="badge badge-success">{{ $transaksi->status }}</span>
+                   @else
+                   <span class="badge badge-info">{{ $transaksi->status }}</span>
+                   @endif
+                 </div>
+               </div>
+               <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                <div class="w-full"><span class="font-bold">Denda</span></div>
+                <div class=" text-lg w-full">{!! $transaksi->denda ? '<span class="badge badge-lg badge-error"> Rp. ' .$transaksi->denda  .'</span>' : '-' !!}</div>
               </div>
             </div>
-            <div class="modal-action">
-              <label for="modal{{ $transaksi->id }}" class="btn">
-                Tutup
-              </label>
-            </div>
+          </div>
+          <div class="modal-action">
+            @if ($transaksi->status == 'pinjam')
+            <form action="{{route('transaksi.kembali',$transaksi->id)}}" method="POST">
+              @csrf
+              @method('PUT')
+              <button type="submit" class="btn btn-primary text-white"><i data-feather="check" class="mr-2"></i>Kembalikan</button>
+            </form>
+            @endif
+            <label for="modal{{ $transaksi->id }}" class="btn">
+              Tutup
+            </label>
           </div>
         </div>
-        @endforeach
-      </tbody>
-    </table>
-  </div>
-  <div class="py-4">
-    {{ $transaksis_member->links() }}
-  </div>
+      </div>
+      @endforeach
+    </tbody>
+  </table>
+</div>
+<div class="py-4">
+  {{ $transaksis_member->links() }}
+</div>
 </div>
 </x-app-layout>

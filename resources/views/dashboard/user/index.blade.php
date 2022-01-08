@@ -5,19 +5,19 @@
     </h2>
   </x-slot>
   
-  <div class="p-6 overflow-x-auto ">
-    <div class="w-1/4 pb-4">
-      <div class="relative">
-        <form action="{{ route('user.index') }}" method="get">
-          <input type="text" name="q" placeholder="Search" class="input input-primary w-full"
-          value="{{ request()->q }}">
-          <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
-            <i data-feather="search"></i>
-          </button>
-        </form>
-      </div>
+  <div class="md:w-1/2 w-full pb-4">
+    <div class="relative">
+      <form action="{{ route('user.index') }}" method="get">
+        <input type="text" name="q" placeholder="Search" class="input input-primary w-full"
+        value="{{ request()->q }}">
+        <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
+          <i data-feather="search"></i>
+        </button>
+      </form>
     </div>
-    <table class="table table-fixed w-full table-compact">
+  </div>
+  <div class="p-6 overflow-x-auto ">
+    <table class="w-full table-compact">
       <thead>
         <tr>
           <th class="w-1/2">Username</th>
@@ -37,61 +37,58 @@
             <form action="{{ route('user.destroy', $user->id) }}" method="POST">
               @csrf
               @method('DELETE')
-              <div class="btn-group">
-                <label class="btn btn-sm btn-warning" for="modal{{$user->id}}"><i
-                  data-feather="edit"></i></label>
-                  <button type="submit" class="btn btn-sm btn-error"><i
-                    data-feather="trash-2"></i></button>
-                  </div>
-                </form>
-                @endif
-              </td>
-            </tr>
-            <input type="checkbox" id="modal{{$user->id}}" class="modal-toggle">
-                  <div class="modal">
-                    <div class="modal-box">
-                      <span class="text-xl font-bold">Edit User {{$user->name}}</span>
-                      <div>
-                        <form action="{{ route('user.update', $user->id) }}" method="post">
-                          @csrf
-                          @method('PUT')
-                          <div class="form-control my-2">
-                            <label class="label">
-                              <span class="label-text">Username</span>
-                            </label>
-                            <input type="text" name="name" class="input input-primary" value="{{ $user->name }}">
-                          </div>
-                          <div class="form-control my-2">
-                            <label class="label">
-                              <span class="label-text">Email</span>
-                            </label>
-                            <input type="mail" name="email" class="input input-primary" value="{{ $user->email }}">
-                          </div>
-                          <div class="form-control my-2">
-                            <label class="label">
-                              <span class="label-text">Password</span>
-                            </label>
-                            <input type="password" name="password" class="input input-primary">
-                            <label class="label">
-                              <span class="label-text-alt text-error">kosongkan jika tidak merubah password</span>
-                            </label>
-                          </div>
-                            <div class="modal-action">
-                            <button type="submit" class="btn btn-warning">Update User</button>
-                            <label for="modal{{$user->id}}" class="btn">Batal</label>
+              <label class="btn btn-sm btn-warning" for="modal{{$user->id}}"><i
+                data-feather="edit"></i></label>
+                <button type="submit" class="btn btn-sm btn-error"><i
+                  data-feather="trash-2"></i></button>
+                  @endif
+                </td>
+              </tr>
+              <input type="checkbox" id="modal{{$user->id}}" class="modal-toggle">
+              <div class="modal">
+                <div class="modal-box">
+                  <span class="text-xl font-bold">Edit User {{$user->name}}</span>
+                  <div>
+                    <form action="{{ route('user.update', $user->id) }}" method="post">
+                      @csrf
+                      @method('PUT')
+                      <div class="form-control my-2">
+                        <label class="label">
+                          <span class="label-text">Username</span>
+                        </label>
+                        <input type="text" name="name" class="input input-primary" value="{{ $user->name }}">
                       </div>
-                          <div class="py-2">
-                          </div>
-                        </form>
+                      <div class="form-control my-2">
+                        <label class="label">
+                          <span class="label-text">Email</span>
+                        </label>
+                        <input type="mail" name="email" class="input input-primary" value="{{ $user->email }}">
                       </div>
-                    
-                    </div>
+                      <div class="form-control my-2">
+                        <label class="label">
+                          <span class="label-text">Password</span>
+                        </label>
+                        <input type="password" name="password" class="input input-primary">
+                        <label class="label">
+                          <span class="label-text-alt text-error">kosongkan jika tidak merubah password</span>
+                        </label>
+                      </div>
+                      <div class="modal-action">
+                        <button type="submit" class="btn btn-warning">Update User</button>
+                        <label for="modal{{$user->id}}" class="btn">Batal</label>
+                      </div>
+                      <div class="py-2">
+                      </div>
+                    </form>
                   </div>
-            @endforeach
-          </tbody>
-        </table>
-        <div class="py-4">
-          {{ $users->links() }}
+
+                </div>
+              </div>
+              @endforeach
+            </tbody>
+          </table>
+          <div class="py-4">
+            {{ $users->links() }}
+          </div>
         </div>
-      </div>
-    </x-app-layout>
+      </x-app-layout>
