@@ -34,13 +34,14 @@
   </div>
 
   <div class="overflow-x-auto ">
-    <table class="w-full">
+    <table class="w-full table-compact">
       <thead>
         <tr>
-          <th class="w-2/4">Judul</th>
-          <th class="w-2/4">Peminjam</th>
-          <th class="w-2/4">Tgl Pinjam</th>
-          <th class="w-1/4"></th>
+          <th class="w-3/6">Judul</th>
+          <th class="w-2/6">Peminjam</th>
+          <th class="w-3/6">Status</th>
+          <th class="w-2/6">Tgl Pinjam</th>
+          <th class="w-2/6"></th>
         </tr>
       </thead>
       <tbody>
@@ -63,6 +64,7 @@
             <br>
             <div class="badge badge-primary text-base">{{ $transaksi->member->nim }}</div> 
           </td>
+          <td>{{  $transaksi->status }}</td>
           <td class="text-center">{{ Carbon\Carbon::parse($transaksi->tgl_pinjam)->format('d/M/Y') }}</td>
           <td colspan="2" class="flex justify-end content-center">
             <label class="btn btn-sm btn-ghost btn-xs modal-button" for="modal{{ $transaksi->id }}">

@@ -28,9 +28,9 @@ Route::get('/buku/{id}',[LandingController::class,'show'])->name('landing.show')
 //     return new VerifikasiBuku();
 // });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth','verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth','verified'])->name('dashboard');
 Route::middleware(['auth','checkRole','verified'])->prefix('dashboard')->group(function(){
     Route::put('role/{id}', [PetugasController::class, 'role'])->name('role.petugas');
     Route::resource('user',UserController::class)->only(['update','destroy']);
@@ -42,6 +42,7 @@ Route::middleware(['auth','checkRole','verified'])->prefix('dashboard')->group(f
 });
 
 Route::middleware(['auth','verified'])->prefix('dashboard')->group(function(){
+    Route::get('/',[LandingController::class,'dashboard'])->name('dashboard');
     Route::get('user',[UserController::class,'index'])->middleware('adminOnly')->name('user.index');
     Route::resource('profile',ProfileController::class)->only(['index','store']);
     Route::get('pinjam/{slug}', [TransaksiController::class, 'pinjam'])->name('transaksi.pinjam');
