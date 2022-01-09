@@ -125,7 +125,7 @@
                 @if ($transaksi->status == 'pinjam')
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Terlambat</span></div>
-                  <div class=" text-lg w-full">{{ Carbon\Carbon::create($transaksi->tgl_kembali)->lessThan(today()) ? Carbon\Carbon::create($transaksi->tgl_kembali)->lessThan(today()) : '0' }} Hari</div>
+                  <div class=" text-lg w-full">{{ Carbon\Carbon::create($transaksi->tgl_kembali)->diffInDays(today()) ?? '0'}} Hari</div>
                 </div>
                 @endif
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
