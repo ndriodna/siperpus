@@ -2,7 +2,7 @@
 <div class="modal overflow-y-auto grid sm:mx-auto lg:-mr-80">
   <div class="modal-box w-screen">
     <h2 class="font-semibold text-xl text-content leading-tight">
-      {{ __('Buku Edit') }} - {{$buku->judul }}
+      {{ __('Buku Edit') }}
     </h2>
     <form action="{{route('buku.update',$buku->id)}}" method="POST" enctype="multipart/form-data">
       @csrf

@@ -38,13 +38,13 @@
       <thead>
         <tr>
           <th class="w-2/6">Judul</th>
-          <th class="w-2/6">Peminjam</th>
+          <th class="w-2/6">Petugas</th>
           <th class="w-3/6">Status</th>
           <th class="w-2/6">Tenggat</th>
           <th class="w-1/6"></th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="divide-y divide-gray-300">
         @foreach ($transaksis_member as $transaksi)
         <tr class="space-x-4">
           <td>
@@ -60,13 +60,19 @@
             </div>
           </td>
           <td class="text-center">
-            <span>{{ $transaksi->member->nama }}</span>
-            <br>
-            <div class="badge badge-primary text-base">{{ $transaksi->member->nim }}</div> 
+            <span>{{ $transaksi->petugas->nama ?? '-' }}</span>
           </td>
-          <td>{{  $transaksi->status }}</td>
+          <td>
+            @if ($transaksi->status == 'menunggu verifikasi')
+            <span class="badge badge-warning">{{ $transaksi->status }}</span>
+            @elseif($transaksi->status == 'pinjam')
+            <span class="badge badge-success">{{ $transaksi->status }}</span>
+            @else
+            <span class="badge badge-info">{{ $transaksi->status }}</span>
+            @endif
+          </td>
           <td class="text-center">{{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}</td>
-          <td colspan="2" class="flex justify-end content-center">
+          <td colspan="2" class="flex justify-end align-center content-center">
             <label class="btn btn-sm btn-ghost btn-xs modal-button" for="modal{{ $transaksi->id }}">
               <span>Details</span>
             </label>
@@ -76,16 +82,27 @@
         <div class="modal overflow-y-auto grid lg:-mr-80 ">
           <div class="modal-box lg:w-full md:w-full w-full max-w-2xl">
             <div class="card">
-              <h2 class="card-title text-center">Detail Transaksi Peminjaman </h2>
+              <h2 class="card-title text-center">Detail Transaksi </h2>
               <div class="flex justify-center">
                 <img src="{{$transaksi->buku->cover}}" class="max-h-80 w-96 rounded">
               </div>
               <div class="space-y-4">
                 <div class="text-center font-bold card-title my-4 px-12">{{$transaksi->buku->judul}}</div>
+                <div class="flex justify-center">
+                  <span class="underline italic">{{$transaksi->buku->pengarang}}</span>
+                </div>
+                <div class="flex justify-between px-20">
+                  <div class="text-center font-semibold">Penerbit <br> <span class="text-sm text-gray-400">{{$transaksi->buku->penerbit ?? '-'}}</span></div>
+                  <div class="text-center font-semibold">Tahun <br> <span class="text-sm text-gray-400">{{$transaksi->buku->tahun_terbit ?? '-'}}</span></div>
+                </div>
                 <div class="border-b-2 border-grey-600"></div>
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Peminjam</span></div>
                   <div class="text-lg w-full">{{$transaksi->member->nama}}</div>
+                </div>
+                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                  <div class="w-full"><span class="font-bold">Petugas</span></div>
+                  <div class="text-lg w-full">{{$transaksi->petugas->nama ?? '-'}}</div>
                 </div>
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Tgl pinjam</span></div>
@@ -95,22 +112,40 @@
                   <div class="w-full"><span class="font-bold">Tgl Kembali</span></div>
                   <div class=" text-lg w-full">{{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}</div>
                 </div>
+                @if ($transaksi->status == 'kembali')
+                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                  <div class="w-full"><span class="font-bold">Tgl Pengembalian</span></div>
+                  <div class=" text-lg w-full">{{ $transaksi->tgl_pengembalian ? Carbon\Carbon::parse($transaksi->tgl_pengembalian)->format('d/M/Y') : '-' }}</div>
+                </div>
+                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                  <div class="w-full"><span class="font-bold">Terlambat</span></div>
+                  <div class=" text-lg w-full">{{ Carbon\Carbon::create($transaksi->tgl_kembali)->diffInDays($transaksi->tgl_pengembalian) }} Hari</div>
+                </div>
+                @endif
+                @if ($transaksi->status == 'pinjam')
+                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                  <div class="w-full"><span class="font-bold">Terlambat</span></div>
+                  <div class=" text-lg w-full">{{ Carbon\Carbon::create($transaksi->tgl_kembali)->lessThan(today()) ? Carbon\Carbon::create($transaksi->tgl_kembali)->lessThan(today()) : '0' }} Hari</div>
+                </div>
+                @endif
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Status</span></div>
                   <div class=" text-lg w-full">
                    @if ($transaksi->status == 'menunggu verifikasi')
-                   <span class="badge badge-warning">{{ $transaksi->status }}</span>
+                   <span class="badge badge-lg badge-warning">{{ $transaksi->status }}</span>
                    @elseif($transaksi->status == 'pinjam')
-                   <span class="badge badge-success">{{ $transaksi->status }}</span>
+                   <span class="badge badge-lg badge-success">{{ $transaksi->status }}</span>
                    @else
-                   <span class="badge badge-info">{{ $transaksi->status }}</span>
+                   <span class="badge badge-lg badge-info">{{ $transaksi->status }}</span>
                    @endif
                  </div>
                </div>
+               @if ($transaksi->status == 'kembali')
                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                 <div class="w-full"><span class="font-bold">Denda</span></div>
                 <div class=" text-lg w-full">{!! $transaksi->denda ? '<span class="badge badge-lg badge-error"> Rp. ' .$transaksi->denda  .'</span>' : '-' !!}</div>
               </div>
+              @endif
             </div>
           </div>
           <div class="modal-action">

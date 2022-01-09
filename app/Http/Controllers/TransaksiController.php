@@ -26,7 +26,7 @@ class TransaksiController extends Controller
             return view('dashboard.transaksi.index', compact('transaksis'));
         }else{
             $transaksis_member = Transaksi::with('member','petugas','buku')
-                                ->where('member_id', auth::user()->member->id)->paginate(10);
+            ->where('member_id', auth::user()->member->id)->paginate(10);
 
             if($transaksis_member->count() <= 0){
                 return view('dashboard.transaksi.hero', compact('transaksis_member'));
@@ -44,6 +44,7 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(['tgl_kembali' => 'required']);
         // insert data kedalam database
         Transaksi::create([
             'tgl_pinjam' => now(),
@@ -73,7 +74,7 @@ class TransaksiController extends Controller
 
         // update data transaksi
         $transaksi->update([
-            'status' => 'Pinjam',
+            'status' => 'pinjam',
             'petugas_id' => Auth::user()->petugas->id,
         ]);
 
@@ -92,7 +93,7 @@ class TransaksiController extends Controller
     {
         // ambil data transaksi berdasarkan user yang sedang login
         $transaksi = Transaksi::with('member','petugas','buku')
-                              ->where('member_id', auth::user()->member->id)->findOrFail($id);
+        ->where('member_id', auth::user()->member->id)->findOrFail($id);
 
         // variabel yg menampung array
         $data = [

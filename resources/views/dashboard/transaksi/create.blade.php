@@ -12,7 +12,7 @@
                 <div class="card lg:card-side md:card-side shadow-lg bg-base-100">
                     <figure>
                         <img src="{{ $buku->cover }}" alt=""
-                            class="max-h-80">
+                        class="max-h-80">
                     </figure>
                     <div class="card-body">
                         <span class="text-3xl font-medium">{{ $buku->judul }}</span>
@@ -39,7 +39,7 @@
                 <label class="label">
                     <span class="label-text">Tanggal Kembali</span>
                 </label>
-                <input type="date" name="tgl_kembali" class="input input-primary">
+                <input type="date" name="tgl_kembali" class="input input-primary" required>
             </div>
             <div class="py-2">
                 <button class="btn btn-warning" type="submit">Ajukan Peminjaman</button>

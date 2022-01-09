@@ -50,12 +50,13 @@ class BukuController extends Controller
         $data['slug'] =  Str::slug($request->judul, '-');
 
         // request file cover
-        $cover = $request->file('cover');
+        if ($request->hasFile('cover')) {
+            $cover = $request->file('cover');
         // simpan request cover kedalam folder public/covers dengan nama sesuai nama file
-        $cover->storeAs('public/covers/', $cover->hashName());
+            $cover->storeAs('public/covers/', $cover->hashName());
         // tukar array cover dengan data request cover kemudian simpan ke db, hanya nama file saja tanpa path
-        $data ['cover'] = $cover->hashName();
-
+            $data ['cover'] = $cover->hashName();
+        }
         Buku::create($data);
 
         return redirect(route('buku.index'))->with('toast_success','Data Buku Berhasil Ditambahkan!');
@@ -104,9 +105,9 @@ class BukuController extends Controller
             $cover = $request->file('cover');
             $cover->storeAs('public/covers/', $cover->hashName());
             $data ['cover'] = $cover->hashName();
-        $buku->update($data);
+            $buku->update($data);
         }else{
-        $buku->update($data);
+            $buku->update($data);
         }
         return redirect(route('buku.index'))->with('toast_success','Data Buku Berhasil Diubah!');
     }
@@ -120,10 +121,10 @@ class BukuController extends Controller
     public function destroy(Buku $buku)
     {
         if ($buku->cover) {
-        Storage::disk('local')->delete('public/covers/'.basename($buku->cover));
-        $buku->delete();
+            Storage::disk('local')->delete('public/covers/'.basename($buku->cover));
+            $buku->delete();
         }else{
-        $buku->delete();
+            $buku->delete();
         }
         return redirect(route('buku.index'))->with('toast_success','Berhasil Menghapus Buku!');
     }
