@@ -149,7 +149,7 @@
             </div>
           </div>
           <div class="modal-action">
-            @if ($transaksi->status == 'pinjam')
+            @if ($transaksi->status == 'pinjam' && Carbon\Carbon::create($transaksi->tgl_kembali)->lessThanOrEqualTo(today()))
             <form action="{{route('transaksi.kembali',$transaksi->id)}}" method="POST">
               @csrf
               @method('PUT')
