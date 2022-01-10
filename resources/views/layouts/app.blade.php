@@ -35,13 +35,15 @@
                         {{ $header }}
                     </span>
                 </div>
-                @include('layouts.signOut')
+                <div class="relative">
+                    @include('layouts.signOut')
+                </div>
             </div>
 
             {{-- content --}}
             <div class="max-w-screen mx-auto">
                 <div class="px-6 py-4">
-                        {{ $slot }}
+                    {{ $slot }}
                 </div>
             </div>
             @include('sweetalert::alert')

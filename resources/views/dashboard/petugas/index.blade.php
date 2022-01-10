@@ -21,6 +21,7 @@
       <thead>
         <tr>
           <th class="w-1/2">Nama</th>
+          <th class="w-1/2">Username</th>
           <th class="w-1/2">Email</th>
           <th class="w-1/2">Level</th>
           <th class="w-1/2"></th>
@@ -29,6 +30,7 @@
       <tbody>
         @foreach ($users as $user)
         <tr>
+          <td>{{ $user->petugas->nama ?? '-' }}</td>
           <td>{{ $user->name }}</td>
           <td>{{ $user->email }}</td>
           <td>{{ $user->level }}</td>

@@ -22,7 +22,7 @@
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:mx-0 md:mx-0 mx-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:mx-0 md:mx-0 mx-4">
     @foreach ($bukus as $buku)
     <div class="card text-center shadow-2xl">
       <figure>

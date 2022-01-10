@@ -23,60 +23,71 @@
           <tr>
             <td><a href="{{ route('rak.show', $rak->id) }}">{{ $rak->nama }}</a></td>
             <td colspan="2" class=" flex justify-end">
+              <div class="btn-group">
+                <label class="btn btn-sm btn-warning modal-button" for="modal{{ $rak->id }}"><i data-feather="edit"></i></label>
+                <label class="btn btn-sm btn-error modal-button" for="delete-modal{{ $rak->id }}"><i data-feather="trash-2"></i></label>
+              </div>
+            </td>
+          </tr>
+          {{-- delete modal --}}
+          <input type="checkbox" id="delete-modal{{ $rak->id }}" class="modal-toggle">
+          <div class="modal">
+            <div class="modal-box">
+              <div class="text-xl font-bold">Hapus Rak - {{$rak->nama}}</div>
               <form action="{{ route('rak.destroy', $rak->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <div class="btn-group">
-                  <button type="submit" class="btn btn-sm btn-error"><i
-                    data-feather="trash-2"></i></button>
-                    <label class="btn btn-sm btn-warning modal-button" for="modal{{ $rak->id }}"><i
-                      data-feather="edit"></i></label>
-                    </div>
-                  </form>
-                </td>
-              </tr>
-              <input type="checkbox" id="modal{{ $rak->id }}" class="modal-toggle">
-              <div class="modal">
-                <div class="modal-box">
-                  <form action="{{route('rak.update',$rak->id)}}" method="POST" class="w-1/2 mx-auto">
-                    @csrf
-                    @method('PUT')
-                    <div class="form-control">
-                      <label class="label">
-                        <span class="label-text">Nama Rak</span>
-                      </label>
-                      <input type="text" class="input input-primary" name="nama" value="{{$rak->nama}}">
-                    </div>
-                    <div class="modal-action">
-                      <button type="submit" class="btn btn-primary">Update</button>
-                      <label for="modal{{$rak->id}}" class="btn btn-error">Tutup</label>
-                    </form>
-                  </div>
+                <div class="modal-action">
+                  <button type="submit" class="btn btn-error">Hapus</button>
+                  <label for="delete-modal{{$rak->id}}" class="btn">Batal</label>  
                 </div>
-                @endforeach
-              </tbody>
-            </table>
+              </form>
+            </div>
           </div>
-
-          <input type="checkbox" id="add-modal" class="modal-toggle">
-          {{-- add modal --}}
-          <div class="modal overflow-y-auto grid -mr-80">
-            <div class="modal-box my-6 w-screen">
-              <span class="text-xl font-bold">Tambah Rak</span>
-              <form action="{{ route('rak.store') }}" method="POST">
+          {{-- edit modal --}}
+          <input type="checkbox" id="modal{{ $rak->id }}" class="modal-toggle">
+          <div class="modal">
+            <div class="modal-box">
+              <div class="text-xl font-bold">Edit Rak</div>
+              <form action="{{route('rak.update',$rak->id)}}" method="POST" class="w-1/2 mx-auto">
                 @csrf
+                @method('PUT')
                 <div class="form-control">
                   <label class="label">
                     <span class="label-text">Nama Rak</span>
                   </label>
-                  <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
+                  <input type="text" class="input input-primary" name="nama" value="{{$rak->nama}}">
                 </div>
                 <div class="modal-action">
-                  <button type="submit" class="btn btn-primary">Simpan</button>
-                  <label for="add-modal" class="btn btn-error">Tutup</label>
-                </form>
-              </div>
+                  <button type="submit" class="btn btn-primary">Update</button>
+                  <label for="modal{{$rak->id}}" class="btn btn-error">Tutup</label>
+                </div>
+              </form>
             </div>
-          </div>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
 
-        </x-app-layout>
+      {{-- add modal --}}
+      <input type="checkbox" id="add-modal" class="modal-toggle">
+      <div class="modal overflow-y-auto grid lg:-mr-80">
+        <div class="modal-box w-screen">
+          <span class="text-xl font-bold">Tambah Rak</span>
+          <form action="{{ route('rak.store') }}" method="POST">
+            @csrf
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text">Nama Rak</span>
+              </label>
+              <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
+            </div>
+            <div class="modal-action">
+              <button type="submit" class="btn btn-primary">Simpan</button>
+              <label for="add-modal" class="btn btn-error">Tutup</label>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </x-app-layout>

@@ -3,10 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
-use App\Models\Transaksi;
-use App\Models\Petugas;
-use App\Models\Member;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class LandingController extends Controller
@@ -22,17 +18,6 @@ class LandingController extends Controller
             $bukus = $bukus->where('judul','like', '%' . request()->search.'%');
         })->paginate(8);
         return view('landing.index',compact('bukus'));
-    }
-
-    public function dashboard()
-    {
-        $transaksi = Transaksi::where('status','menunggu verifikasi')->get();
-
-        $onlyAuthMember = null;
-        if (Auth::user()->level == 'member') {
-            $onlyAuthMember = $transaksi->where('member_id', Auth::user()->member->id);
-        }
-        return view('dashboard',compact('transaksi','onlyAuthMember'));
     }
 
     /**

@@ -14,7 +14,6 @@
           <th class="w-1/6">Jenkel</th>
           <th class="w-1/6">Jurusan</th>
           <th class="w-1/6">Telp</th>
-          <th class="w-1/6">Action</th>
         </tr>
       </thead>
       <tbody class="divide-y divide-grey-300">
@@ -25,15 +24,7 @@
           <td>{{$member->nama}}</td>
           <td>{{$member->jk}}</td>
           <td>{{$member->jurusan}}</td>
-          <td>{{$member->telp}}</td>
-          <td colspan="2">
-            <form action="{{route('member.destroy',$member->id)}}" method="POST">
-              @csrf
-              @method('DELETE')
-              <a href="{{route('member.edit',$member->id)}}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
-              <button type="submit" class="btn btn-sm btn-error"><i data-feather="trash-2"></i></button>
-            </form>
-          </td>          
+          <td>{{$member->telp}}</td>          
         </tr>
         @endforeach
 
