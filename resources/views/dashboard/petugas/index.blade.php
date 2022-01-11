@@ -5,64 +5,50 @@
     </h2>
   </x-slot>
 
-  <div class="lg:w-1/2 w-full mx-auto pb-4">
-    <div class="relative">
-      <form action="{{ route('petugas.index') }}" method="get">
-        <input type="text" name="q" placeholder="Search" class="input input-primary w-full"
+  <div class="w-full mx-auto pb-4">
+    <form action="{{ route('petugas.index') }}" method="get">
+      <div class="relative inset-y-0 flex items-center block">
+        <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
         value="{{ request()->q }}">
-        <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
+        <select name="by" class="select select-primary rounded-l-none rounded-r-none">
+          <option disabled selected>Cari berdasarkan</option>
+          <option value="nama">Nama</option>
+          <option value="jabatan">Jabatan</option>
+        </select>
+        <button class="btn btn-primary rounded-l-none">
           <i data-feather="search"></i>
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
   <div class="p-6 overflow-x-auto ">
     <table class="w-full table table-compact">
       <thead>
         <tr>
-          <th class="w-1/2">Nama</th>
-          <th class="w-1/2">Username</th>
-          <th class="w-1/2">Email</th>
-          <th class="w-1/2">Level</th>
-          <th class="w-1/2"></th>
+          <th></th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Nama</th>
+          <th>JenKel</th>
+          <th>Jabatan</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($users as $user)
+        @foreach ($petugas as $data)
         <tr>
-          <td>{{ $user->petugas->nama ?? '-' }}</td>
-          <td>{{ $user->name }}</td>
-          <td>{{ $user->email }}</td>
-          <td>{{ $user->level }}</td>
-          @if ($user->level == 'member')
-          <td colspan="2" class="flex justify-end">
-            <label class="btn btn-sm btn-warning modal-button" for="modal{{ $user->id }}">
-              <i data-feather="check"></i>
-            </label>
-            <input type="checkbox" id="modal{{ $user->id }}" class="modal-toggle">
-            <div class="modal">
-              <div class="modal-box">
-                <p class="text-2xl">Ubah kelevel petugas ?</p>
-                <div class="modal-action">
-                  <form action="{{ route('role.petugas', $user->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-primary">Ya</button>
-                  </form>
-                  <label for="modal{{ $user->id }}" class="btn">
-                    Tidak
-                  </label>
-                </div>
-              </div>
-            </div>
-          </td>
-          @endif
+          <td></td>
+          <td>{{ $data->user->name }}</td>
+          <td>{{ $data->user->email }}</td>
+          <td>{{ $data->nama ?? '-' }}</td>
+          <td>{{ $data->jk }}</td>
+          <td>{{ $data->jabatan }}</td>
         </tr>
         @endforeach
       </tbody>
     </table>
   </div>
   <div class="py-4">
-    {{ $users->links() }}
+    {{ $petugas->links() }}
   </div>
 </x-app-layout>

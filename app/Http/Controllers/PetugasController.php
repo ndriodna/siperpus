@@ -18,10 +18,12 @@ class PetugasController extends Controller
     public function index()
     {
         // ambil data user dengan member dimana levelnya != member, pecah 10 data per halaman
-        $users = User::with('member','petugas')->where('level', '!=', 'admin')->paginate(10);
-
-        // lempar variabel ke view
-        return view('dashboard.petugas.index',compact('users'));
+        // $users = User::with('member','petugas')->where('level', '!=', 'admin')->paginate(10);
+        $petugas = Petugas::with('user')->when(request()->q, function($search){
+            $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
+        })->paginate(20);
+        
+        return view('dashboard.petugas.index',compact('petugas'));
     }
 
     /**
@@ -42,8 +44,7 @@ class PetugasController extends Controller
      */
     public function store(PetugasRequest $request)
     {
-        Petugas::create($request->all());
-        return redirect(route('petugas.index'));
+
     }
 
     /**

@@ -10,16 +10,24 @@
     </div>
   </div>
 
-  <div class="mx-auto py-12">
-    <div class="relative">
-      <form action="{{ route('landing.index') }}" method="get" class="mx-auto">
-        <input type="text" class="input input-bordered input-primary w-full" placeholder="Cari Judul"
-        name="search" value="{{ request()->search }}">
-        <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
+  <div class="w-full mx-auto py-4">
+    <form action="{{ route('landing.index') }}" method="get">
+      <div class="relative inset-y-0 flex items-center block">
+        <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
+        value="{{ request()->q }}">
+        <select name="by" class="select select-primary rounded-l-none rounded-r-none">
+          <option disabled selected> {{request()->by ?? 'Cari berdasarkan'}}</option>
+          <option value="judul">Judul</option>
+          <option value="isbn">ISBN</option>
+          <option value="pengarang">Penulis</option>
+          <option value="penerbit">Penerbit</option>
+          <option value="tahun_terbit">Tahun</option>
+        </select>
+        <button class="btn btn-primary rounded-l-none">
           <i data-feather="search"></i>
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:mx-0 md:mx-0 mx-4">

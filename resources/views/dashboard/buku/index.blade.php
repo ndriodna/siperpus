@@ -14,16 +14,25 @@
     </div>
   </div>
   <div class="p-6">
-    <div class="lg:w-1/2 w-full mx-auto pb-4">
-      <div class="relative">
-        <form action="{{ route('buku.index') }}" method="get">
-          <input type="text" name="q" placeholder="Search" class="input input-primary w-full"
+    <div class="w-full mx-auto pb-4">
+      <form action="{{ route('buku.index') }}" method="get">
+        <div class="relative inset-y-0 flex items-center block">
+          <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
           value="{{ request()->q }}">
-          <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
+          <select name="by" class="select select-primary rounded-l-none rounded-r-none">
+            <option disabled selected>Cari berdasarkan</option>
+            <option value="judul">Judul</option>
+            <option value="isbn">ISBN</option>
+            <option value="pengarang">Penulis</option>
+            <option value="penerbit">Penerbit</option>
+            <option value="tahun_terbit">Tahun</option>
+            <option value="stok">Stok</option>
+          </select>
+          <button class="btn btn-primary rounded-l-none">
             <i data-feather="search"></i>
           </button>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
     <div class="overflow-x-auto ">
       <table class="w-full table-compact">

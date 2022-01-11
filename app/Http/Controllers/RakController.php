@@ -16,7 +16,9 @@ class RakController extends Controller
      */
     public function index()
     {
-      $raks = Rak::get();
+      $raks = Rak::when(request()->q, function ($search){
+        $search->where('nama','like','%'.request()->q.'%');
+    })->paginate(20);
       return view('dashboard.rak.index',compact('raks'));
   }
 

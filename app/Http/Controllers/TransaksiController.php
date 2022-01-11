@@ -20,17 +20,28 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        $transaksis = Transaksi::with('member','petugas','buku')->paginate(10);
+        // nda tau gmna biar relasi ikut di search
+
+        // $transaksis = Transaksi::with('member','petugas','buku')->when(request()->q, function($search){
+        //     $search->where(request()->by ?? 'judul','like','%'.request()->q.'%')->orWhereHas('member', function($search){
+        //         $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
+        //     });
+        // })->paginate(20);
+        $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
 
         if(auth::user()->level != 'member'){
             return view('dashboard.transaksi.index', compact('transaksis'));
         }else{
             $transaksis_member = Transaksi::with('member','petugas','buku')
-            ->where('member_id', auth::user()->member->id)->paginate(10);
+            ->where('member_id', auth::user()->member->id)->paginate(20);
 
             if($transaksis_member->count() <= 0){
                 return view('dashboard.transaksi.hero', compact('transaksis_member'));
             }else{
+                // filter status nda mau
+                $transaksis_member->when(request()->q, function($search){
+                    $search->where('status','like','%'.request()->q.'%');
+                });
                 return view('dashboard.transaksi.member', compact('transaksis_member'));
             }
         }

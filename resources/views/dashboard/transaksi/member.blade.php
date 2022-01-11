@@ -21,16 +21,20 @@
       </div>
     </div>
   </div>
-  <div class="w-full pb-4">
-    <div class="relative">
-      <form action="{{ route('transaksi.index') }}" method="get">
-        <input type="text" name="q" placeholder="Search " class="input input-primary w-full"
-        value="{{ request()->q }}">
-        <button class="absolute top-0 right-0 rounded-1-none btn btn-primary">
+  <div class="w-full mx-auto py-4">
+    <form action="{{ route('transaksi.index') }}" method="get">
+      <div class="relative inset-y-0 flex items-center">
+        <select name="q" class="select select-primary rounded-r-none w-1/2 ">
+          <option disabled selected>{{request()->q ?? 'Status'}}</option>
+          <option value="menunggu verifikasi">Menunggu Verifikasi</option>
+          <option value="pinjam">Pinjam</option>
+          <option value="kembali">Kembali</option>
+        </select>
+        <button class="btn btn-primary rounded-l-none">
           <i data-feather="search"></i>
         </button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 
   <div class="overflow-x-auto ">

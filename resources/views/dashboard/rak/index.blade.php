@@ -10,6 +10,17 @@
         class="mr-2"></i>Tambah Rak</label>
       </div>
     </div>
+    <div class="w-full mx-auto py-4">
+      <form action="{{ route('rak.index') }}" method="get">
+        <div class="relative inset-y-0 flex items-center block">
+          <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
+          value="{{ request()->q }}">
+          <button class="btn btn-primary rounded-l-none">
+            <i data-feather="search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
     <div class="overflow-x-auto p-6 ">
       <table class="table table-compact w-full">
         <thead>
@@ -89,5 +100,7 @@
           </div>
         </div>
       </div>
-
+      <div class="py-4">
+        {{ $raks->links() }}
+      </div>
     </x-app-layout>

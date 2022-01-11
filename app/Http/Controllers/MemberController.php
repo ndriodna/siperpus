@@ -15,7 +15,9 @@ class MemberController extends Controller
      */
     public function index()
     {
-        $members = Member::with('user')->paginate(10);
+        $members = Member::when(request()->q, function($search){
+            $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
+        })->paginate(20);;
         $users = User::get();
         return view('dashboard.member.index',compact('members','users'));
     }
