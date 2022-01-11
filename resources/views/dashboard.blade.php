@@ -27,92 +27,54 @@
       </svg> 
       <label class="text-left">
         <h4>Notifikasi</h4> 
+        @if (Auth::user()->level != 'member')
         <p class="text-md text-base-content text-opacity-60">
-          @if (Auth::user()->level != 'member')
           @if($transaksi->count() <= 0)
           Tidak ada pemberitahuan
           @else
-          Anda memiliki <span class="text-error text-xl font-bold">{{$transaksi->count()}}</span> transaksi menunggu verifikasi
+          <span class="text-error text-xl font-bold">{{$transaksi->count()}}</span> transaksi menunggu verifikasi
           @endif
+        </p>
+        @endif
+        <!--alert member-->
+        @if(Auth::user()->level == 'member')
+        <p class="text-md text-base-content text-opacity-60">
+          @if($onlyAuthMember->count() <= 0)
+          Tidak ada pemberitahuan
+          @else
+          {{$onlyAuthMember->count()}} transaksi menunggu verifikasi
           @endif
-          <!--alert member-->
-          @if(Auth::user()->level == 'member')
-          <p class="text-md text-base-content text-opacity-60">
-            @if($onlyAuthMember->count() <= 0)
-            Tidak ada pemberitahuan
-            @else
-            Anda memiliki {{$onlyAuthMember->count()}} transaksi menunggu verifikasi
-            @endif
-            @endif
-          </p>
-        </label>
-      </div> 
-    </div>
+        </p>
+        @endif
+      </label>
+    </div> 
   </div>
-
-  {{-- card --}}
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    @if(Auth::user()->level != 'member')
-    <div class="card shadow-lg">
-      <div class="card-body">
-        <div class="flex justify-between">
-          <div><span class="font-semibold text-gray-500">Buku </span><br> <span class="text-xl font-semibold">{{$countBuku}}</span></div>
-          <div class="flex justify-end">
-            <button class="btn btn-primary btn-md btn-circle">
-              <i data-feather="book" color="white"></i>
-            </button>
-          </div>
-        </div>
-        <div class="text-sm mt-4">
-          <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i> 2%</span>
-          <span class="text-gray-500">Bulan Lalu</span>
-        </div>
-      </div>
-    </div>
-    <div class="card shadow-lg">
-      <div class="card-body">
-        <div class="flex justify-between">
-          <div><span class="font-semibold text-gray-500">Transaksi </span><br> <span class="text-xl font-semibold">{{$countTransaksi}}</span></div>
-          <div class="flex justify-end">
-            <button class="btn btn-error btn-md btn-circle">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-              viewBox="0 0 24 24" stroke="white">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-            </svg>
-          </button>
-        </div>
-      </div>
-      <div class="text-sm mt-4">
-        <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i> 2%</span>
-        <span class="text-gray-500">Bulan Lalu</span>
-      </div>
-    </div>
+</div>
+{{-- alert terlambat --}}
+@if(Auth::user()->member && $notifTerlambat->count() > 0)
+<div class="alert alert-warning">
+  <div class="flex-1">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-6 h-6 mx-2 stroke-current"> 
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>                         
+    </svg> 
+    <label class="text-left">
+      <h4>Terlambat!</h4>
+      <p class="text-md text-base-content text-opacity-60">{{$notifTerlambat->count()}} peminjaman terlambat</p>
+    </label>
   </div>
+</div>
+@endif
+{{-- card --}}
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  @if(Auth::user()->level != 'member')
   <div class="card shadow-lg">
     <div class="card-body">
       <div class="flex justify-between">
-        <div><span class="font-semibold text-gray-500">Users </span><br> <span class="text-xl font-semibold">{{$countUser}}</span></div>
+        <div><span class="font-semibold text-gray-500">Buku </span><br> <span class="text-xl font-semibold">{{$countBuku}}</span></div>
         <div class="flex justify-end">
-          <button class="btn btn-warning btn-md btn-circle">
-            <i data-feather="users" color="white"></i>
-          </button>
-        </div>
-      </div>
-      <div class="text-sm mt-4">
-        <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i> 5%</span>
-        <span class="text-gray-500">Bulan Lalu</span>
-      </div>
-    </div>
-  </div>
-  <div class="card shadow-lg">
-    <div class="card-body">
-      <div class="flex justify-between">
-        <div><span class="font-semibold text-gray-500">Petugas </span><br> <span class="text-xl font-semibold">{{$countPetugas}}</span></div>
-        <div class="flex justify-end">
-          <button class="btn btn-md btn-info btn-circle">
-            <i data-feather="user"></i>
+          <button class="btn btn-primary btn-md btn-circle">
+            <i data-feather="book" color="white"></i>
           </button>
         </div>
       </div>
@@ -125,24 +87,7 @@
   <div class="card shadow-lg">
     <div class="card-body">
       <div class="flex justify-between">
-        <div><span class="font-semibold text-gray-500">Member </span><br> <span class="text-xl font-semibold">{{$countMember}}</span></div>
-        <div class="flex justify-end">
-          <button class="btn btn-success btn-md btn-circle">
-            <i data-feather="user" color="white"></i>
-          </button>
-        </div>
-      </div>
-      <div class="text-sm mt-4">
-        <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i> 2%</span>
-        <span class="text-gray-500">Bulan Lalu</span>
-      </div>
-    </div>
-  </div>
-  @else
-  <div class="card shadow-lg">
-    <div class="card-body">
-      <div class="flex justify-between">
-        <div><span class="font-semibold text-gray-500">Peminjaman </span><br> <span class="text-xl font-semibold">{{$transakiAuthMember}}</span></div>
+        <div><span class="font-semibold text-gray-500">Transaksi </span><br> <span class="text-xl font-semibold">{{$countTransaksi}}</span></div>
         <div class="flex justify-end">
           <button class="btn btn-error btn-md btn-circle">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -153,7 +98,76 @@
         </button>
       </div>
     </div>
+    <div class="text-sm mt-4">
+      <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i> 2%</span>
+      <span class="text-gray-500">Bulan Lalu</span>
+    </div>
   </div>
+</div>
+<div class="card shadow-lg">
+  <div class="card-body">
+    <div class="flex justify-between">
+      <div><span class="font-semibold text-gray-500">Users </span><br> <span class="text-xl font-semibold">{{$countUser}}</span></div>
+      <div class="flex justify-end">
+        <button class="btn btn-warning btn-md btn-circle">
+          <i data-feather="users" color="white"></i>
+        </button>
+      </div>
+    </div>
+    <div class="text-sm mt-4">
+      <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i> 5%</span>
+      <span class="text-gray-500">Bulan Lalu</span>
+    </div>
+  </div>
+</div>
+<div class="card shadow-lg">
+  <div class="card-body">
+    <div class="flex justify-between">
+      <div><span class="font-semibold text-gray-500">Petugas </span><br> <span class="text-xl font-semibold">{{$countPetugas}}</span></div>
+      <div class="flex justify-end">
+        <button class="btn btn-md btn-info btn-circle">
+          <i data-feather="user"></i>
+        </button>
+      </div>
+    </div>
+    <div class="text-sm mt-4">
+      <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i> 2%</span>
+      <span class="text-gray-500">Bulan Lalu</span>
+    </div>
+  </div>
+</div>
+<div class="card shadow-lg">
+  <div class="card-body">
+    <div class="flex justify-between">
+      <div><span class="font-semibold text-gray-500">Member </span><br> <span class="text-xl font-semibold">{{$countMember}}</span></div>
+      <div class="flex justify-end">
+        <button class="btn btn-success btn-md btn-circle">
+          <i data-feather="user" color="white"></i>
+        </button>
+      </div>
+    </div>
+    <div class="text-sm mt-4">
+      <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i> 2%</span>
+      <span class="text-gray-500">Bulan Lalu</span>
+    </div>
+  </div>
+</div>
+@else
+<div class="card shadow-lg">
+  <div class="card-body">
+    <div class="flex justify-between">
+      <div><span class="font-semibold text-gray-500">Peminjaman </span><br> <span class="text-xl font-semibold">{{$transakiAuthMember->count()}}</span></div>
+      <div class="flex justify-end">
+        <button class="btn btn-error btn-md btn-circle">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+          viewBox="0 0 24 24" stroke="white">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
 </div>
 @endif
 </div>
