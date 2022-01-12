@@ -68,7 +68,7 @@ class ProfileController extends Controller
                 'created_at' => now()
             ]);
         }
-        return back();
+        return back()->with('toast_success', 'Berhasil Melengkapi Profile');
     }
 
     /**

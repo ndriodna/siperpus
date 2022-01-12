@@ -26,4 +26,13 @@ class Buku extends Model
     {
         return BookFactory::new();
     }
+
+    public function getCoverAttribute($cover)
+    {
+        if($cover != null){
+            return asset('storage/covers/'. $cover);
+        }else{
+            return asset('cover-default.svg');
+        }
+    }
 }

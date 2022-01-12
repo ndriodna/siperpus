@@ -9,9 +9,9 @@
       <div class="flex-none mx-2">
         <a href="{{url('/')}}" class="btn btn-ghost text-neutral">Beranda</a>
       </div>
-      <div class="flex-none mx-2">
+      {{-- <div class="flex-none mx-2">
         <a href="{{url('/')}}" class="btn btn-ghost text-neutral">Statistik</a>
-      </div>
+      </div> --}}
       @auth
       <div class="flex-none mx-2">
         <a href="{{route('dashboard')}}" class="btn btn-ghost text-neutral">Dashboard</a>

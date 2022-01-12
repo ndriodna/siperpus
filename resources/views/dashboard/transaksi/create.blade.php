@@ -9,10 +9,10 @@
             @csrf
             <div class="mx-auto px-12">
 
-                <div class="card lg:card-side shadow-lg bg-base-100">
+                <div class="card lg:card-side md:card-side shadow-lg bg-base-100">
                     <figure>
-                        <img src="{{ $buku->cover ? asset($buku->cover) : asset('cover-default.svg') }}" alt=""
-                            class="max-h-fit">
+                        <img src="{{ $buku->cover }}" alt=""
+                        class="max-h-80">
                     </figure>
                     <div class="card-body">
                         <span class="text-3xl font-medium">{{ $buku->judul }}</span>
@@ -35,17 +35,11 @@
                 </div>
             </div>
             <input type="hidden" name="buku_id" value="{{ $buku->id }}">
-            <div class="form-control my-2">
-                <label class="label">
-                    <span class="label-text">Tanggal Pinjam</span>
-                </label>
-                <input type="date" name="tgl_pinjam" class="input input-primary">
-            </div>
             <div class=" form-control my-2">
                 <label class="label">
                     <span class="label-text">Tanggal Kembali</span>
                 </label>
-                <input type="date" name="tgl_kembali" class="input input-primary">
+                <input type="date" name="tgl_kembali" class="input input-primary" required>
             </div>
             <div class="py-2">
                 <button class="btn btn-warning" type="submit">Ajukan Peminjaman</button>

@@ -10,12 +10,12 @@
 					Beranda
 				</a>
 			</li>
-			<li class="mb-2">
+			{{-- <li class="mb-2">
 				<a href="{{ url('/') }}" class="capitalize">
 					<i data-feather="pie-chart" class="mr-2"></i>
 					Statistik
 				</a>
-			</li>
+			</li> --}}
 			<li class="mt-4 menu-title">
 				<span>User</span>
 			</li>

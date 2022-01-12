@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@mail.com',
                 'password' => Hash::make('superadmin'),
                 'level' => 'admin',
+                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -33,6 +34,7 @@ class UserSeeder extends Seeder
                 'email' => 'petugas1@mail.com',
                 'password' => Hash::make('petugas123'),
                 'level' => 'petugas',
+                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -42,6 +44,7 @@ class UserSeeder extends Seeder
                 'email' => 'member1@mail.com',
                 'password' => Hash::make('member123'),
                 'level' => 'member',
+                'email_verified_at' => now(),
                 'created_at' => now(),
                 'updated_at' => now()
             ],

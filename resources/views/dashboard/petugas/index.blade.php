@@ -1,110 +1,54 @@
 <x-app-layout>
-	<x-slot name="header">
+  <x-slot name="header">
     <h2 class="font-semibold text-xl text-content leading-tight">
       {{ __('Petugas') }}
     </h2>
   </x-slot>
-  <div class="card">
-    <div class="mx-auto">
-      <label for="add-modal" class="btn btn-md btn-primary modal-button"><i data-feather="plus-circle" class="mr-2"></i>Tambah Petugas</label>
-    </div>
-    <div class="card-body">
-      <table class="table w-full table-compact">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>nama</th>
-            <th>Jenkel</th>
-            <th>Jabatan</th>
-            <th>Telp</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($petugass as $petugas)
-          <tr>
-            <td>{{$petugas->user->name}}</td>
-            <td>{{$petugas->nama}}</td>
-            <td>{{$petugas->jk}}</td>
-            <td>{{$petugas->jabatan}}</td>
-            <td>{{$petugas->telp}}</td>
-            <td colspan="2">
-              <form action="{{route('petugas.destroy',$petugas->id)}}" method="POST">
-                @csrf
-                @method('DELETE')
-                <div class="btn-group">
-                  <a href="{{route('petugas.edit',$petugas->id)}}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
-                  <button type="submit" class="btn btn-sm btn-error"><i data-feather="trash-2"></i></button>
-                </div>
-              </form>
-            </td>          
-          </tr>
-          @endforeach
 
-        </tbody>
-      </table>
-      <div class="py-4">
-        {{ $petugass->links() }}
+  <div class="w-full mx-auto pb-4">
+    <form action="{{ route('petugas.index') }}" method="get">
+      <div class="relative inset-y-0 flex items-center block">
+        <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
+        value="{{ request()->q }}">
+        <select name="by" class="select select-primary rounded-l-none rounded-r-none">
+          <option disabled selected>Cari berdasarkan</option>
+          <option value="nama">Nama</option>
+          <option value="jabatan">Jabatan</option>
+        </select>
+        <button class="btn btn-primary rounded-l-none">
+          <i data-feather="search"></i>
+        </button>
       </div>
-    </div>
+    </form>
   </div>
-
-  {{-- add-modal --}}
-  <input type="checkbox" id="add-modal" class="modal-toggle">
-  <div class="modal overflow-y-auto grid sm:mx-auto lg:-mr-80">
-    <div class="modal-box my-6 w-screen">
-      <span class="text-xl font-bold">Tambah Petugas</span>
-      <form action="{{route('petugas.store')}}" method="POST" class="py-4">
-        @csrf
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Username</span>
-          </label>
-          <select name="user_id" class="select select-primary">
-            {{-- disini pengennya habis milih user yg dijadikan petugas pas mau tambah baru lagi user yg sudah dipilih nda tampil --}}
-            <option disabled selected >Pilih user untuk petugas</option>
-            @foreach($users as $user)
-            <option value="{{$user->id}}">{{$user->email}} - {{$user->name}}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Nama</span>
-          </label>
-          <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama">
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Jenis Kelamin</span>
-          </label>
-          <select name="jk" id="" class="select select-primary">
-            <option disabled selected>Pilih Jenis Kelamin</option>
-            <option value="L">Laki-laki</option>
-            <option value="P">Perempuan</option>
-          </select>
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Jabatan</span>
-          </label>
-          <input type="text" class="input input-primary" name="jabatan" placeholder="Masukan jabatan">
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Telp</span>
-          </label>
-          <input name="telp" type="number" placeholder="ex: 0808080808" class="input input-primary" />
-        </div>
-        <div class="form-control">
-          <label class="label">
-            <span class="label-text">Alamat</span>
-          </label>
-          <textarea class="textarea h-24 textarea-bordered textarea-primary" placeholder="Alamat" name="alamat"></textarea>
-        </div>
-        <div class="modal-action">
-          <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-        <label for="add-modal" class="btn btn-error">Tutup</label>
-      </div>
-    </x-app-layout>
+  <div class="p-6 overflow-x-auto ">
+    <table class="w-full table table-compact">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Nama</th>
+          <th>JenKel</th>
+          <th>Jabatan</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach ($petugas as $data)
+        <tr>
+          <td></td>
+          <td>{{ $data->user->name }}</td>
+          <td>{{ $data->user->email }}</td>
+          <td>{{ $data->nama ?? '-' }}</td>
+          <td>{{ $data->jk }}</td>
+          <td>{{ $data->jabatan }}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+  <div class="py-4">
+    {{ $petugas->links() }}
+  </div>
+</x-app-layout>

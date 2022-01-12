@@ -1,50 +1,56 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-content leading-tight">
-          {{ __('Member') }}
-      </h2>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-content leading-tight">
+      {{ __('Member') }}
+    </h2>
   </x-slot>
-  <div class="card">
-    {{-- maunya sih member nda ush ditambah biar mereka regis trus edit bio datanya di profile --}}
-    <div class="card-body">
-      <table class="table w-full table-compact">
-        <thead>
-          <tr>
-            <th>Username</th>
-            <th>nama</th>
-            <th>Jenkel</th>
-            <th>Jurusan</th>
-            <th>Telp</th>
-            <th>Action</th>
+  <div class="w-full mx-auto pb-4">
+    <form action="{{ route('member.index') }}" method="get">
+      <div class="relative inset-y-0 flex items-center block">
+        <input type="text" name="q" placeholder="Cari" class="input input-primary w-full rounded-r-none"
+        value="{{ request()->q }}">
+        <select name="by" class="select select-primary rounded-l-none rounded-r-none">
+          <option disabled selected>Cari berdasarkan</option>
+          <option value="nim">NIM</option>
+          <option value="nama">Nama</option>
+          <option value="jurusan">Jurusan</option>
+        </select>
+        <button class="btn btn-primary rounded-l-none">
+          <i data-feather="search"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="overflow-x-auto my-4">
+    <table class="w-full table table-compact">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>NIM</th>
+          <th>Nama</th>
+          <th>Jenkel</th>
+          <th>Jurusan</th>
         </tr>
-    </thead>
-    <tbody>
-      @foreach($members as $member)
-      <tr>
-        <td>{{$member->user->name}}</td>
-        <td>{{$member->nama}}</td>
-        <td>{{$member->jk}}</td>
-        <td>{{$member->jurusan}}</td>
-        <td>{{$member->telp}}</td>
-        <td colspan="2">
-          <form action="{{route('member.destroy',$member->id)}}" method="POST">
-            @csrf
-            @method('DELETE')
-            <div class="btn-group">
-              <a href="{{route('member.edit',$member->id)}}" class="btn btn-sm btn-warning "><i data-feather="edit"></i></a>
-              <button type="submit" class="btn btn-sm btn-error"><i data-feather="trash-2"></i></button>
-          </div>
-      </form>
-  </td>          
-</tr>
-@endforeach
-
-</tbody>
-</table>
-<div class="py-4">
+      </thead>
+      <tbody class="divide-y divide-grey-300">
+        @foreach($members as $member)
+        <tr>
+          <th></th>
+          <td>{{$member->user->name}}</td>
+          <td>{{$member->user->email}}</td>
+          <td>{{$member->nim}}</td>
+          <td>{{$member->nama}}</td>
+          <td>{{$member->jk}}</td>
+          <td>{{$member->jurusan}}</td>
+        </tr>
+        @endforeach
+      </tbody>
+    </table>
+  </div>
+  <div class="py-4">
     {{ $members->links() }}
-</div>
-</div>
-</div>
+  </div>
 
 </x-app-layout>

@@ -20,9 +20,10 @@ class CreateTransaksisTable extends Migration
             $table->foreignId('petugas_id')->nullable();
             $table->foreignId('buku_id')->constrained('bukus')
                   ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->text('invoice');
             $table->date('tgl_pinjam')->nullable();
             $table->date('tgl_kembali')->nullable();
+            $table->date('tgl_pengembalian')->nullable();
+            $table->integer('denda')->nullable();
             $table->enum('status',['pinjam','menunggu verifikasi','kembali']);
             $table->timestamps();
         });

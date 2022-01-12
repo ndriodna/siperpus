@@ -16,8 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::when(request()->q, function($users){
-            $users = $users->where('name','like', '%'. request()->q .'%');
+        $users = User::when(request()->q, function($search){
+            $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
         })->paginate(20);
         return view('dashboard.user.index',compact('users'));
     }
@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-       
+     
     }
 
     public function update(Request $request, User $user)
@@ -45,6 +45,12 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => $password,
         ]);
-        return back();
+        return back()->with('toast_success','Berhasil update User');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return back()->with('toast_success','Berhasil Menghapus User');
     }
 }
