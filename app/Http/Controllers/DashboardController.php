@@ -24,11 +24,11 @@ class DashboardController extends Controller
 
         // ambil data buku yg dimana created at >= tgl awal bulan sebelumnya sampai dengan tanggal akhir bulan sebelumnya, hitung jumlahnya
         $bulan_kemaren = Buku::where('created_at', '>=', Carbon::now()->startOfMonth()->subMonthNoOverflow())
-                             ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
+        ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
 
         // ambil data buku yg dimana created at >= tgl awal bulan ini sampai dengan tanggal akhir bulan ini, hitung jumlahnya
         $bulan_skrg = Buku::where('created_at', '>=', Carbon::now()->startOfMonth())
-                          ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
+        ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
 
         //---------------- rumus persentase---------------//
         // tambahan if klo bulan lalu kosong nda error
@@ -38,18 +38,18 @@ class DashboardController extends Controller
 
             $rumus = $hasil_perbandingan / $bulan_kemaren;
 
-            $hasil_akhir = $rumus;
+            $hasil_akhir = $rumus * 100;
         }
 
         //----------------------------------------------//
 
          // ambil data buku yg dimana created at >= tgl awal bulan sebelumnya sampai dengan tanggal akhir bulan sebelumnya, hitung jumlahnya
         $bulan_kemaren_transaksi = Transaksi::where('created_at', '>=', Carbon::now()->startOfMonth()->subMonthNoOverflow())
-                             ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
+        ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
 
         // ambil data buku yg dimana created at >= tgl awal bulan ini sampai dengan tanggal akhir bulan ini, hitung jumlahnya
         $bulan_skrg_transaksi = Transaksi::where('created_at', '>=', Carbon::now()->startOfMonth())
-                          ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
+        ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
 
         //---------------- rumus persentase---------------//
         // tambahan if klo bulan lalu kosong nda error
@@ -59,7 +59,7 @@ class DashboardController extends Controller
 
             $rumus = $hasil_perbandingan / $bulan_kemaren_transaksi;
             
-            $hasil_akhir_transaksi = $rumus;
+            $hasil_akhir_transaksi = $rumus * 100;
         }
 
         //----------------------------------------------//
