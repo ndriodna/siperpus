@@ -4,7 +4,6 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    @if (Auth::user()->level == 'member' && auth::user()->member->nim != '')
         {{-- alert user login --}}
         <div class="w-full pb-4">
             <div class="alert alert-info">
@@ -18,10 +17,24 @@
                 </div>
             </div>
         </div>
-    @endif
-
+@if (Auth::user()->level == 'member' && auth::user()->member->nim == '')
+        <div class="hero min-h-screen bg-base-200">
+            <div class="text-center hero-content">
+                <div class="max-w-md">
+                    <h1 class="mb-5 text-3xl font-bold">
+                        Halo, Selamat Datang
+                    </h1>
+                    <p class="mb-5">
+                        Silahkan lengkapi profile anda untuk bisa melakukan peminjaman buku
+                    </p>
+                    <a href="{{ route('profile.index') }}" class="btn btn-primary text-white">Lengkapi
+                        Profile</a>
+                </div>
+            </div>
+        </div>
+@else
     {{-- alert trasaction pending --}}
-    <div class="pb-4">
+    <div class="py-4">
         <div class="alert">
             <div class="flex-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="#009688"
@@ -76,7 +89,7 @@
     @endif
     {{-- card --}}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-3">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-3 ">
         @if (Auth::user()->level != 'member')
             <div class="card shadow-lg">
                 <div class="card-body">
@@ -93,12 +106,17 @@
                         @if ($hasil_akhir < 0)
                             <span class="text-sm text-error mr-2">
                                 <i data-feather="arrow-down" class="inline-block"></i>
-                                {{ $hasil_akhir }} % Bulan Lalu
+                                {{ substr($hasil_akhir,0,4) }} % Bulan Lalu
+                            </span>
+                        @elseif($hasil_akhir > 0)
+                            <span class="text-sm text-green-500 mr-2">
+                                <i data-feather="arrow-up" class="inline-block"></i>
+                                {{ substr($hasil_akhir,0,4) }} % Bulan Lalu
                             </span>
                         @else
                             <span class="text-sm text-green-500 mr-2">
-                                <i data-feather="arrow-up" class="inline-block"></i>
-                                {{ $hasil_akhir }} % Bulan Lalu
+                                <i data-feather="minus" class="inline-block"></i>
+                                0 % Bulan Lalu
                             </span>
                         @endif
                     </div>
@@ -120,9 +138,22 @@
                         </div>
                     </div>
                     <div class="text-sm mt-4">
-                        <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i>
-                            2%</span>
-                        <span class="text-gray-500">Bulan Lalu</span>
+                        @if ($hasil_akhir_transaksi < 0)
+                            <span class="text-sm text-error mr-2">
+                                <i data-feather="arrow-down" class="inline-block"></i>
+                                {{ substr($hasil_akhir_transaksi,0,4) }} % Bulan Lalu
+                            </span>
+                        @elseif($hasil_akhir_transaksi > 0)
+                            <span class="text-sm text-green-500 mr-2">
+                                <i data-feather="arrow-up" class="inline-block"></i>
+                                {{ substr($hasil_akhir_transaksi,0,4) }} % Bulan Lalu
+                            </span>
+                        @else
+                            <span class="text-sm text-green-500 mr-2">
+                                <i data-feather="minus" class="inline-block"></i>
+                                0 % Bulan Lalu
+                            </span>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -137,11 +168,6 @@
                             </button>
                         </div>
                     </div>
-                    <div class="text-sm mt-4">
-                        <span class="text-sm text-green-500 mr-2"><i data-feather="arrow-up" class="inline-block"></i>
-                            5%</span>
-                        <span class="text-gray-500">Bulan Lalu</span>
-                    </div>
                 </div>
             </div>
             <div class="card shadow-lg">
@@ -155,11 +181,6 @@
                             </button>
                         </div>
                     </div>
-                    <div class="text-sm mt-4">
-                        <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i>
-                            2%</span>
-                        <span class="text-gray-500">Bulan Lalu</span>
-                    </div>
                 </div>
             </div>
             <div class="card shadow-lg">
@@ -172,11 +193,6 @@
                                 <i data-feather="user" color="white"></i>
                             </button>
                         </div>
-                    </div>
-                    <div class="text-sm mt-4">
-                        <span class="text-sm text-error mr-2"><i data-feather="arrow-down" class="inline-block"></i>
-                            2%</span>
-                        <span class="text-gray-500">Bulan Lalu</span>
                     </div>
                 </div>
             </div>
@@ -200,21 +216,5 @@
             </div>
         @endif
     </div>
-
-    @if (Auth::user()->level == 'member' && auth::user()->member->nim == '')
-        <div class="hero min-h-screen bg-base-200">
-            <div class="text-center hero-content">
-                <div class="max-w-md">
-                    <h1 class="mb-5 text-3xl font-bold">
-                        Halo, Selamat Datang
-                    </h1>
-                    <p class="mb-5">
-                        Silahkan lengkapi profile anda untuk bisa melakukan peminjaman buku
-                    </p>
-                    <a href="{{ route('profile.index') }}" class="btn btn-primary text-white">Lengkapi
-                        Profile</a>
-                </div>
-            </div>
-        </div>
     @endif
 </x-app-layout>
