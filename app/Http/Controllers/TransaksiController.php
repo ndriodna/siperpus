@@ -20,28 +20,57 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        // nda tau gmna biar relasi ikut di search
-
-        // $transaksis = Transaksi::with('member','petugas','buku')->when(request()->q, function($search){
-        //     $search->where(request()->by ?? 'judul','like','%'.request()->q.'%')->orWhereHas('member', function($search){
-        //         $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
-        //     });
-        // })->paginate(20);
-        $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
-
+        // cek jika user bukan level member
         if(auth::user()->level != 'member'){
+            // ambil data transaksi dengan relasi dibatasi 20 data per halaman
+            $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
+
+            // jika request filter berdasarkan status
+            if(request()->by == 'status'){
+                /* ambil data transaksi ketika request dijalankan carikan data yang hampir sama
+                dengan request dibatasi 20 data perhalaman*/
+                $transaksis = Transaksi::with('member','petugas','buku')->when(request()->q, function($search){
+                    $search->where(request()->by ?? 'status', 'like', '%'. request()->q. '%');
+                })->paginate(20);
+
+                // jika request filter berdasarkan nama
+            }elseif(request()->by == 'nama'){
+                /* ambil data transaksi dengan relasi petugas dan member ketika request dijalankan
+                carikan data yang hampir sama dengan request dibatasi 20 data perhalaman*/
+                $transaksis = Transaksi::with('member','petugas','buku')->whereHas('petugas', function($search){
+                    $search->where(request()->by ?? 'petugas.nama', 'like', '%'. request()->q. '%');
+                })->orWhereHas('member', function($search){
+                    $search->where(request()->by ?? 'member.nama', 'like', '%'. request()->q. '%');
+                })->paginate(20);
+
+                // jika request berdasakan judul
+            }elseif(request()->by == 'judul'){
+                /* ambil data transaksi dengan relasi buku ketika request dijalankan
+                carikan data yang hampir sama dengan request dibatasi 20 data perhalaman*/
+                $transaksis = Transaksi::with('member','petugas','buku')->whereHas('buku', function($search){
+                    $search->where(request()->by ?? 'buku.judul', 'like', '%'. request()->q. '%');
+                })->paginate(20);
+            }
+
+            // lempar data ke dalam transaksi index
             return view('dashboard.transaksi.index', compact('transaksis'));
         }else{
             $transaksis_member = Transaksi::with('member','petugas','buku')
             ->where('member_id', auth::user()->member->id)->paginate(20);
 
+            // jika transaksi member masih kurang dari sama dengan 0
             if($transaksis_member->count() <= 0){
+                // lempar kehalam transaksi hero
                 return view('dashboard.transaksi.hero', compact('transaksis_member'));
             }else{
-                // filter status nda mau
-                $transaksis_member->when(request()->q, function($search){
-                    $search->where('status','like','%'.request()->q.'%');
-                });
+                /* ambil data transaksi member ketika request dijalankan
+                carikan data yang hampir sama dengan status yg dipilih batasi
+                20 data perhalaman*/
+                $transaksis_member = Transaksi::with('member','petugas','buku')
+                ->where('member_id', auth::user()->member->id)->when(request()->q, function($search){
+                    $search->where('status','like', '%'.request()->q.'%');
+                })->paginate(20);
+                // lempar data kedalam transaski member
                 return view('dashboard.transaksi.member', compact('transaksis_member'));
             }
         }
@@ -65,7 +94,7 @@ class TransaksiController extends Controller
             'status' => 'menunggu verifikasi',
         ]);
 
-        //
+        // kembali kehalaman transaksi index
         return redirect(route('transaksi.index'));
     }
 

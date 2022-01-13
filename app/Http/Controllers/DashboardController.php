@@ -21,6 +21,25 @@ class DashboardController extends Controller
         $countPetugas = Petugas::count();
         $countMember = Member::count();
 
+
+        // ambil data buku yg dimana created at >= tgl awal bulan sebelumnya sampai dengan tanggal akhir bulan sebelumnya, hitung jumlahnya
+        $bulan_kemaren = Buku::where('created_at', '>=', Carbon::now()->startOfMonth()->subMonthNoOverflow())
+                             ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
+
+        // ambil data buku yg dimana created at >= tgl awal bulan ini sampai dengan tanggal akhir bulan ini, hitung jumlahnya
+        $bulan_skrg = Buku::where('created_at', '>=', Carbon::now()->startOfMonth())
+                          ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
+
+        //---------------- rumus persentase---------------//
+
+        $hasil_perbandingan = $bulan_skrg - $bulan_kemaren;
+
+        $rumus = $hasil_perbandingan / $bulan_kemaren;
+
+        $hasil_akhir = $rumus * 100/100 ;
+
+        //----------------------------------------------//
+
         $transaksi = Transaksi::where('status','menunggu verifikasi')->get();
 
         $onlyAuthMember = null;
@@ -29,9 +48,8 @@ class DashboardController extends Controller
         if (Auth::user()->level == 'member') {
             $onlyAuthMember = $transaksi->where('member_id', Auth::user()->member->id);
             $transakiAuthMember = Transaksi::where('member_id', Auth::user()->member->id)->get();
-            $notifTerlambat = $transakiAuthMember->where('status','pinjam')->where('tgl_kembali','<' ,now());
-            // dd(Carbon::today());
+            $notifTerlambat = $transakiAuthMember->where('status','pinjam')->where('tgl_kembali','>' ,now());
         }
-        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat'));
+        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','hasil_akhir'));
     }
 }
