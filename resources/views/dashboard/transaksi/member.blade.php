@@ -83,13 +83,11 @@
           </td>
         </tr>
         <input type="checkbox" id="modal{{ $transaksi->id }}" class="modal-toggle">
-        <div class="modal overflow-y-auto grid lg:-mr-80 ">
-          <div class="modal-box lg:w-full md:w-full w-full max-w-2xl">
+        <div class="modal overflow-y-auto sm:mx-auto md:-mr-80 ">
+          <div class="modal-box w-screen">
             <div class="card">
-              <h2 class="card-title text-center">Detail Transaksi </h2>
-              <div class="flex justify-center">
-                <img src="{{$transaksi->buku->cover}}" class="max-h-80 w-96 rounded">
-              </div>
+              <h2 class="card-title text-center text-2xl">Detail Transaksi </h2>
+              <div class="border-b-2 border-grey-600"></div>
               <div class="space-y-4">
                 <div class="text-center font-bold card-title my-4 px-12">{{$transaksi->buku->judul}}</div>
                 <div class="flex justify-center">
@@ -129,7 +127,9 @@
                 @if ($transaksi->status == 'pinjam')
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Terlambat</span></div>
-                  <div class=" text-lg w-full">{{ Carbon\Carbon::create($transaksi->tgl_kembali)->diffInDays(today()) ?? '0'}} Hari</div>
+                  <div class=" text-lg w-full">
+                    {{ Carbon\Carbon::create($transaksi->tgl_kembali)->lte(Carbon\Carbon::now()) ? Carbon\Carbon::create($transaksi->tgl_kembali)->diffInDays(Carbon\Carbon::now()) : '0' }}
+                  Hari</div>
                 </div>
                 @endif
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">

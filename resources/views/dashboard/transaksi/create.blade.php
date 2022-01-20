@@ -7,7 +7,7 @@
     <div class="form-control">
         <form action="{{ route('transaksi.store') }}" method="post">
             @csrf
-            <div class="mx-auto px-12">
+            <div class="mx-auto px-4">
 
                 <div class="card lg:card-side md:card-side shadow-lg bg-base-100">
                     <figure>
