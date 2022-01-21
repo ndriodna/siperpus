@@ -84,11 +84,11 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['tgl_kembali' => 'required']);
+        $request->validate(['hari' => 'required']);
         // insert data kedalam database
         Transaksi::create([
             'tgl_pinjam' => now(),
-            'tgl_kembali' => $request->tgl_kembali,
+            'hari' => $request->hari,
             'buku_id' => $request->buku_id,
             'member_id' => Auth::user()->member->id,
             'status' => 'menunggu verifikasi',
@@ -107,7 +107,7 @@ class TransaksiController extends Controller
         return view('dashboard.transaksi.create', compact('buku'));
     }
 
-    public function verifikasi($id)
+    public function verifikasi($id,$hari)
     {
         // ambil data transaksi sesuai id
         $transaksi = Transaksi::findOrFail($id);
@@ -115,6 +115,7 @@ class TransaksiController extends Controller
         // update data transaksi
         $transaksi->update([
             'status' => 'pinjam',
+            'tgl_kembali' => Carbon::now()->addDays($hari),
             'petugas_id' => Auth::user()->petugas->id,
         ]);
 

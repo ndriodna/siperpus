@@ -21,6 +21,7 @@
       </div>
     </div>
   </div>
+  <a href="{{route('landing.index')}}" class="btn btn-outline btn-primary"><i data-feather="arrow-left" class="mr-2"></i>Pinjam Buku Lagi</a>
   <div class="w-full mx-auto py-4">
     <form action="{{ route('transaksi.index') }}" method="get">
       <div class="relative inset-y-0 flex items-center">
@@ -83,7 +84,7 @@
           </td>
         </tr>
         <input type="checkbox" id="modal{{ $transaksi->id }}" class="modal-toggle">
-        <div class="modal overflow-y-auto sm:mx-auto md:-mr-80 ">
+        <div class="modal overflow-y-auto grid sm:mx-auto md:-mr-80 ">
           <div class="modal-box w-screen">
             <div class="card">
               <h2 class="card-title text-center text-2xl">Detail Transaksi </h2>

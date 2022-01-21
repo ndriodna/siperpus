@@ -42,7 +42,7 @@
           <td class="text-center">{{ $transaksi->member->nama }}</td>
           <td class="text-center">{{ $transaksi->petugas->nama ?? '' }}</td>
           <td class="text-center">
-            {{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}</td>
+            {{ $transaksi->tgl_kembali ? Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') : '-' }}</td>
             <td>
               @if ($transaksi->status == 'menunggu verifikasi')
               <span class="badge badge-warning">{{ $transaksi->status }}</span>
@@ -59,7 +59,7 @@
             </td>
           </tr>
           <input type="checkbox" id="modal{{ $transaksi->id }}" class="modal-toggle">
-          <div class="modal overflow-y-auto sm:mx-auto md:-mr-80">
+          <div class="modal overflow-y-auto grid sm:mx-auto md:-mr-80">
             <div class="modal-box w-screen">
               <div class="card">
                 <h2 class="card-title text-center text-2xl">Detail Transaksi</h2>
@@ -88,13 +88,21 @@
                       <div class=" text-lg w-full">
                         {{ Carbon\Carbon::parse($transaksi->tgl_pinjam)->format('d/M/Y') }}</div>
                       </div>
+                      @if(!$transaksi->tgl_kembali)
+                      <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                        <div class="w-full"><span class="font-bold">Hari Peminjaman</span>
+                        </div>
+                        <div class=" text-lg w-full">{{ $transaksi->hari}} Hari</div>
+                      </div>
+                      @else
                       <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                         <div class="w-full"><span class="font-bold">Tgl Kembali</span>
                         </div>
                         <div class=" text-lg w-full">
-                          {{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}
+                          {{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y')}}
                         </div>
                       </div>
+                      @endif
                       @if ($transaksi->status == 'kembali')
                       <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                         <div class="w-full"><span class="font-bold">Tgl
@@ -142,7 +150,7 @@
                   </div>
                   <div class="modal-action">
                     @if ($transaksi->status == 'menunggu verifikasi' && Auth::user()->level == 'petugas')
-                    <form action="{{ route('transaksi.verifikasi', $transaksi->id) }}" method="POST">
+                    <form action="{{ route('transaksi.verifikasi', [$transaksi->id, $transaksi->hari]) }}" method="POST">
                       @csrf
                       @method('PUT')
                       <button type="submit" class="btn btn-primary text-white"><i data-feather="check"

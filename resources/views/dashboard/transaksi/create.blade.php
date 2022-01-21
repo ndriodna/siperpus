@@ -34,16 +34,30 @@
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="buku_id" value="{{ $buku->id }}">
-            <div class=" form-control my-2">
-                <label class="label">
-                    <span class="label-text">Tanggal Kembali</span>
-                </label>
-                <input type="date" name="tgl_kembali" class="input input-primary" required>
+            <div class="my-4 space-y-4">
+                <input type="hidden" name="buku_id" value="{{ $buku->id }}">
+                <div class="flex justify-center">
+                    <label class="text-xl font-medium">Pilih Berapa Hari Peminjaman</label>
+                </div>
+                <div class="flex justify-center space-x-2">
+                    <div class="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-7 gap-2">
+                        @for($i = 1; $i <= 7; $i++)
+                        <label for="modal-hari{{$i}}" class="btn btn-outline modal-button">{{$i}} Hari</label> 
+                        <input type="checkbox" id="modal-hari{{$i}}" class="modal-toggle"> 
+                        <div class="modal">
+                          <div class="modal-box">
+                            <label class="text-xl">Anda memilih {{$i}} Hari Peminjaman</label>
+                            <input type="hidden" name="hari" value="{{$i}}">
+                            <div class="modal-action">
+                                <button class="btn btn-primary" type="submit">Ajukan Peminjaman</button> 
+                                <label for="modal-hari{{$i}}" class="btn">Batal</label>
+                            </div>
+                        </div>
+                    </div>
+                    @endfor
+                </div>
             </div>
-            <div class="py-2">
-                <button class="btn btn-warning" type="submit">Ajukan Peminjaman</button>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
+</div>
 </x-app-layout>
