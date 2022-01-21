@@ -111,10 +111,21 @@
                   <div class="w-full"><span class="font-bold">Tgl pinjam</span></div>
                   <div class=" text-lg w-full">{{ Carbon\Carbon::parse($transaksi->tgl_pinjam)->format('d/M/Y') }}</div>
                 </div>
+                @if(!$transaksi->tgl_kembali)
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
-                  <div class="w-full"><span class="font-bold">Tgl Kembali</span></div>
-                  <div class=" text-lg w-full">{{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y') }}</div>
+                  <div class="w-full"><span class="font-bold">Hari Peminjaman</span>
+                  </div>
+                  <div class=" text-lg w-full">{{ $transaksi->hari}} Hari</div>
                 </div>
+                @else
+                <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
+                  <div class="w-full"><span class="font-bold">Tgl Kembali</span>
+                  </div>
+                  <div class=" text-lg w-full">
+                    {{ Carbon\Carbon::parse($transaksi->tgl_kembali)->format('d/M/Y')}}
+                  </div>
+                </div>
+                @endif
                 @if ($transaksi->status == 'kembali')
                 <div class="flex lg:justify-between md:justify-between mb-2 space-x-6 ">
                   <div class="w-full"><span class="font-bold">Tgl Pengembalian</span></div>
