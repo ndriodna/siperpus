@@ -26,7 +26,7 @@ class CreateTransaksisTable extends Migration
             $table->date('tgl_pengembalian')->nullable();
             $table->integer('denda')->nullable();
             $table->enum('status',['pinjam','menunggu verifikasi','kembali']);
-            $table->enum('status_denda',['lunas','belum lunas']);
+            $table->enum('status_denda',['lunas','belum lunas'])->nullable();
             $table->timestamps();
         });
     }
