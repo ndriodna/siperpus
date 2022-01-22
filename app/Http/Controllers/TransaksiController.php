@@ -23,7 +23,7 @@ class TransaksiController extends Controller
         // cek jika user bukan level member
         if(auth::user()->level != 'member'){
             // ambil data transaksi dengan relasi dibatasi 20 data per halaman
-            $transaksis = Transaksi::with('member','petugas','buku')->orderByRaw("FIELD(status,'menunggu verifikasi','pinjam','kembali') ASC")->paginate(20);
+            $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
 
             // jika request filter berdasarkan status
             if(request()->by == 'status'){
