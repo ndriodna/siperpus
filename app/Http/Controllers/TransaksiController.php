@@ -23,7 +23,7 @@ class TransaksiController extends Controller
         // cek jika user bukan level member
         if(auth::user()->level != 'member'){
             // ambil data transaksi dengan relasi dibatasi 20 data per halaman
-            $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
+            $transaksis = Transaksi::with('member','petugas','buku')->orderByRaw("FIELD(status,'menunggu verifikasi','pinjam','kembali') ASC")->paginate(20);
 
             // jika request filter berdasarkan status
             if(request()->by == 'status'){
@@ -66,7 +66,7 @@ class TransaksiController extends Controller
                 /* ambil data transaksi member ketika request dijalankan
                 carikan data yang hampir sama dengan status yg dipilih batasi
                 20 data perhalaman*/
-                $transaksis_member = Transaksi::with('member','petugas','buku')
+                $transaksis_member = Transaksi::with('member','petugas','buku')->orderBy('created_at','DESC')
                 ->where('member_id', auth::user()->member->id)->when(request()->q, function($search){
                     $search->where('status','like', '%'.request()->q.'%');
                 })->paginate(20);
@@ -155,9 +155,13 @@ class TransaksiController extends Controller
             // masukan variabel denda kedalam varibel data
             $data['denda'] = $denda;
         }
-
+        if ($data['denda'] > 0) {
+            $transaksi->update($data + 
+                ['status_denda' => 'belum lunas']);
+        }else{
         // update data transaksi menggunakan variabel $data
-        $transaksi->update($data);
+            $transaksi->update($data);
+        }
 
         // update stok buku berdasarkan id
         $transaksi->buku->where('id', $transaksi->buku_id)->update([
@@ -166,6 +170,16 @@ class TransaksiController extends Controller
 
         // kembali kehalaman yg sama dengan toast success
         return back()->with('toast_success', 'Buku Berhasil Dikembalikan!');
+    }
+
+    public function lunas($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $transaksi->update([
+            'status_denda' => 'lunas',
+        ]);
+        return back()->with('toast_success', 'Denda Lunas!');
     }
 
 }
