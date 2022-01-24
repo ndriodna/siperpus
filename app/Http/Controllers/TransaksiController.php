@@ -95,7 +95,7 @@ class TransaksiController extends Controller
         ]);
 
         // kembali kehalaman transaksi index
-        return redirect(route('transaksi.index'));
+        return redirect(route('transaksi.index'))->with('toast_info','Peminjaman anda masuk antrian dan akan diverifikasi secepatnya');
     }
 
     public function pinjam(Request $request, $slug)
