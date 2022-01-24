@@ -6,7 +6,6 @@
 - [Install](#install)
 - [Demo](#demo)
 
-<br>
 
 ## Tentang Perpus Mulia
 
