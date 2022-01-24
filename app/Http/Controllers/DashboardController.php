@@ -69,11 +69,13 @@ class DashboardController extends Controller
         $onlyAuthMember = null;
         $transakiAuthMember = null;
         $notifTerlambat = null;
+        $notifDenda = null;
         if (Auth::user()->level == 'member') {
             $onlyAuthMember = $transaksi->where('member_id', Auth::user()->member->id);
             $transakiAuthMember = Transaksi::where('member_id', Auth::user()->member->id)->get();
             $notifTerlambat = $transakiAuthMember->where('status','pinjam')->where('tgl_kembali','<' ,now());
+            $notifDenda = $transakiAuthMember->where('status_denda','belum lunas')->count();
         }
-        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','hasil_akhir','hasil_akhir_transaksi'));
+        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','notifDenda','hasil_akhir','hasil_akhir_transaksi'));
     }
 }
