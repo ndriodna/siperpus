@@ -8,6 +8,26 @@
     <div class="mx-auto">
       <label class="btn btn-md btn-primary modal-button" for="add-modal"><i data-feather="plus-circle"
         class="mr-2"></i>Tambah Rak</label>
+        {{-- add modal --}}
+        <input type="checkbox" id="add-modal" class="modal-toggle">
+        <div class="modal overflow-y-auto grid lg:-mr-80">
+          <div class="modal-box w-screen">
+            <span class="text-xl font-bold">Tambah Rak</span>
+            <form action="{{ route('rak.store') }}" method="POST">
+              @csrf
+              <div class="form-control">
+                <label class="label">
+                  <span class="label-text">Nama Rak</span>
+                </label>
+                <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
+              </div>
+              <div class="modal-action">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <label for="add-modal" class="btn btn-error">Tutup</label>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
     <div class="w-full mx-auto py-4">
@@ -29,7 +49,7 @@
             <th class="flex justify-end">action</th>
           </tr>
         </thead>
-        <tbody >
+        <tbody>
           @foreach ($raks as $rak)
           <tr>
             <td><a href="{{ route('rak.show', $rak->id) }}">{{ $rak->nama }}</a></td>
@@ -75,32 +95,13 @@
                 </div>
               </form>
             </div>
-            @endforeach
-          </tbody>
-        </table>
-      </div>
-
-      {{-- add modal --}}
-      <input type="checkbox" id="add-modal" class="modal-toggle">
-      <div class="modal overflow-y-auto grid lg:-mr-80">
-        <div class="modal-box w-screen">
-          <span class="text-xl font-bold">Tambah Rak</span>
-          <form action="{{ route('rak.store') }}" method="POST">
-            @csrf
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Nama Rak</span>
-              </label>
-              <input type="text" class="input input-primary" name="nama" placeholder="Masukan nama rak">
-            </div>
-            <div class="modal-action">
-              <button type="submit" class="btn btn-primary">Simpan</button>
-              <label for="add-modal" class="btn btn-error">Tutup</label>
-            </form>
           </div>
-        </div>
-      </div>
-      <div class="py-4">
-        {{ $raks->links() }}
-      </div>
-    </x-app-layout>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+
+    <div class="py-4">
+      {{ $raks->links() }}
+    </div>
+  </x-app-layout>

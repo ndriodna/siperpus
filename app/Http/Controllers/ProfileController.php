@@ -40,6 +40,14 @@ class ProfileController extends Controller
     {
          // cek user yang sedang login apakah levelnya tidak sama dengan 'member'
         if(auth::user()->level != 'member'){
+            // validasi petugas
+            $request->validate([
+                'nama' => 'nullable|string',
+                'jk' => 'nullable|in:L,P',
+                'jabatan' => 'nullable|string',
+                'telp' => 'nullable|string',
+                'alamat' => 'nullable|string',
+            ]);
             // check tabel petugas 'user_id' sudah ada data atau belum
             Petugas::updateOrCreate([
                 'user_id' => auth::id(),
@@ -55,7 +63,15 @@ class ProfileController extends Controller
             ]
         );
         }else{
-
+            // validasi petugas
+            $request->validate([
+                'nama' => 'nullable|string',
+                'nim' => 'nullable|integer',
+                'jk' => 'nullable|in:L,P',
+                'jurusan' => 'nullable|string',
+                'telp' => 'nullable|string',
+                'alamat' => 'nullable|string',
+            ]);
             Member::updateOrCreate([
                 'user_id' => auth::id()
             ], [

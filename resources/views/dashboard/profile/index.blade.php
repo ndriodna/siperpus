@@ -34,6 +34,8 @@
             </div>
         </form>
 
+        <div class="mt-8 border-b-2 border-blue-300"></div>
+
         {{-- form bio --}}
         @if (Auth::user()->level != 'admin')
         <form action="{{ route('profile.store') }}" method="post">

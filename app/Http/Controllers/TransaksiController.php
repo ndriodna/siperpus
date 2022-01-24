@@ -23,7 +23,7 @@ class TransaksiController extends Controller
         // cek jika user bukan level member
         if(auth::user()->level != 'member'){
             // ambil data transaksi dengan relasi dibatasi 20 data per halaman
-            $transaksis = Transaksi::with('member','petugas','buku')->paginate(20);
+            $transaksis = Transaksi::with('member','petugas','buku')->orderByRaw("FIELD(status,'menunggu verifikasi','pinjam','kembali') ASC")->paginate(20);
 
             // jika request filter berdasarkan status
             if(request()->by == 'status'){
@@ -66,7 +66,7 @@ class TransaksiController extends Controller
                 /* ambil data transaksi member ketika request dijalankan
                 carikan data yang hampir sama dengan status yg dipilih batasi
                 20 data perhalaman*/
-                $transaksis_member = Transaksi::with('member','petugas','buku')
+                $transaksis_member = Transaksi::with('member','petugas','buku')->orderBy('created_at','DESC')
                 ->where('member_id', auth::user()->member->id)->when(request()->q, function($search){
                     $search->where('status','like', '%'.request()->q.'%');
                 })->paginate(20);
@@ -84,18 +84,18 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(['tgl_kembali' => 'required']);
+        $request->validate(['hari' => 'required']);
         // insert data kedalam database
         Transaksi::create([
             'tgl_pinjam' => now(),
-            'tgl_kembali' => $request->tgl_kembali,
+            'hari' => $request->hari,
             'buku_id' => $request->buku_id,
             'member_id' => Auth::user()->member->id,
             'status' => 'menunggu verifikasi',
         ]);
 
         // kembali kehalaman transaksi index
-        return redirect(route('transaksi.index'));
+        return redirect(route('transaksi.index'))->with('toast_info','Peminjaman anda masuk antrian dan akan diverifikasi secepatnya');
     }
 
     public function pinjam(Request $request, $slug)
@@ -107,7 +107,7 @@ class TransaksiController extends Controller
         return view('dashboard.transaksi.create', compact('buku'));
     }
 
-    public function verifikasi($id)
+    public function verifikasi($id,$hari)
     {
         // ambil data transaksi sesuai id
         $transaksi = Transaksi::findOrFail($id);
@@ -115,6 +115,7 @@ class TransaksiController extends Controller
         // update data transaksi
         $transaksi->update([
             'status' => 'pinjam',
+            'tgl_kembali' => Carbon::now()->addDays($hari),
             'petugas_id' => Auth::user()->petugas->id,
         ]);
 
@@ -154,9 +155,13 @@ class TransaksiController extends Controller
             // masukan variabel denda kedalam varibel data
             $data['denda'] = $denda;
         }
-
+        if ($data['denda'] > 0) {
+            $transaksi->update($data + 
+                ['status_denda' => 'belum lunas']);
+        }else{
         // update data transaksi menggunakan variabel $data
-        $transaksi->update($data);
+            $transaksi->update($data);
+        }
 
         // update stok buku berdasarkan id
         $transaksi->buku->where('id', $transaksi->buku_id)->update([
@@ -165,6 +170,16 @@ class TransaksiController extends Controller
 
         // kembali kehalaman yg sama dengan toast success
         return back()->with('toast_success', 'Buku Berhasil Dikembalikan!');
+    }
+
+    public function lunas($id)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        $transaksi->update([
+            'status_denda' => 'lunas',
+        ]);
+        return back()->with('toast_success', 'Denda Lunas!');
     }
 
 }

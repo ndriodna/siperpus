@@ -39,14 +39,15 @@ Route::middleware(['auth','checkRole','verified'])->prefix('dashboard')->group(f
     Route::resource('rak',RakController::class);
     Route::resource('member',MemberController::class)->only(['index']);
     Route::resource('petugas',PetugasController::class);
-    Route::put('transaksi/verifikasi/{id}', [TransaksiController::class, 'verifikasi'])->name('transaksi.verifikasi');
+    Route::put('transaksi/verifikasi/{id}/{hari}', [TransaksiController::class, 'verifikasi'])->name('transaksi.verifikasi');
+    Route::put('transaksi/lunas/{id}', [TransaksiController::class, 'lunas'])->name('transaksi.lunas');
 });
 
 Route::middleware(['auth','verified'])->prefix('dashboard')->group(function(){
     Route::get('/',[DashboardController::class,'index'])->name('dashboard');
     Route::get('user',[UserController::class,'index'])->middleware('adminOnly')->name('user.index');
     Route::resource('profile',ProfileController::class)->only(['index','store']);
-    Route::get('pinjam/{slug}', [TransaksiController::class, 'pinjam'])->name('transaksi.pinjam');
+    Route::get('pinjam/{slug}', [TransaksiController::class, 'pinjam'])->name('transaksi.pinjam')->middleware('MemberOnly');
     Route::put('transaksi/kembali/{id}', [TransaksiController::class, 'kembali'])->name('transaksi.kembali');
     Route::resource('transaksi',TransaksiController::class);
 });

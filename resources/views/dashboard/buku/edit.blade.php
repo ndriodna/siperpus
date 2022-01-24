@@ -66,9 +66,24 @@
       </div>
       <div class="modal-action">
         <button type="submit" class="btn btn-primary">Update</button>
-      </form>
-      <label for="modal{{$buku->id}}" class="btn btn-error">Tutup</label>
-    </div>
-  </form>
+        <label for="modal{{$buku->id}}" class="btn btn-error">Tutup</label>
+      </div>
+    </form>
+  </div>
 </div>
+
+{{-- delete modal --}}
+<input type="checkbox" id="delete-modal{{ $buku->id }}" class="modal-toggle">
+<div class="modal">
+  <div class="modal-box">
+    <div class="text-xl font-bold">Hapus Buku - {{$buku->judul}}</div>
+    <form action="{{ route('buku.destroy', $buku->id) }}" method="POST">
+      @csrf
+      @method('DELETE')
+      <div class="modal-action">
+        <button type="submit" class="btn btn-error">Hapus</button>
+        <label for="delete-modal{{$buku->id}}" class="btn">Batal</label>  
+      </div>
+    </form>
+  </div>
 </div>

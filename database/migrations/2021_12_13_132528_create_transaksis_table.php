@@ -16,15 +16,17 @@ class CreateTransaksisTable extends Migration
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('member_id')->constrained('members')
-                  ->cascadeOnDelete()->cascadeOnUpdate();
+            ->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('petugas_id')->nullable();
             $table->foreignId('buku_id')->constrained('bukus')
-                  ->cascadeOnDelete()->cascadeOnUpdate();
+            ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->smallInteger('hari')->nullable();
             $table->date('tgl_pinjam')->nullable();
             $table->date('tgl_kembali')->nullable();
             $table->date('tgl_pengembalian')->nullable();
             $table->integer('denda')->nullable();
             $table->enum('status',['pinjam','menunggu verifikasi','kembali']);
+            $table->enum('status_denda',['lunas','belum lunas'])->nullable();
             $table->timestamps();
         });
     }
