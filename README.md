@@ -32,7 +32,7 @@ Perpus Mulia  adalah aplikasi web peminjaman buku perpustakaan PSDKU universitas
 - Responsive
 ## Install
 
-> Pastikan git cli sudah terinstall
+Pastikan git cli sudah terinstall
 ```
 1. git clone https://github.com/ndriodna/siperpus.git
 2. copy .env.example .env
@@ -43,7 +43,7 @@ Perpus Mulia  adalah aplikasi web peminjaman buku perpustakaan PSDKU universitas
 ```
 
 ## Demo
-> Untuk demo dapat kunjungi link dibawah <br>
+Untuk demo dapat kunjungi link dibawah <br>
 http://perpusmulia.herokuapp.com
 
 - Admin
