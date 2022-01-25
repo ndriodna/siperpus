@@ -21,7 +21,7 @@ class MemberOnly
         if(Auth::check() && Auth::user()->level == 'member'){
             return $next($request);
         }
-        return redirect(route('landing.index'))
-                ->withErrors('Mohon maaf peminjaman hanya khusus member!');
+        alert()->error('Mohon maaf', 'Peminjaman hanya khusus member!');
+        return redirect(route('landing.index'));
     }
 }
