@@ -18,10 +18,10 @@
       </div> 
       @else
       <div class="flex-none mx-2">
-        <a href="{{route('login')}}" class="btn btn-ghost text-neutral">Login</a>
+        <a href="{{route('login')}}" class="btn btn-ghost text-neutral">Masuk</a>
       </div>
       <div class="flex-none mx-2">
-        <a href="{{route('register')}}" class="btn btn-ghost text-neutral">Register</a>
+        <a href="{{route('register')}}" class="btn btn-ghost text-neutral">Daftar</a>
       </div>
       @endauth
     </div>

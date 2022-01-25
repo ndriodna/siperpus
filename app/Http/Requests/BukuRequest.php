@@ -31,7 +31,7 @@ class BukuRequest extends FormRequest
             'tahun_terbit' => 'nullable|string',
             'stok' => 'required|integer',
             'cover' => 'nullable', // dimensions:width=1280,height=720 atur sendiri co
-            'rak_id' => 'required|integer',
+            'kategori_id' => 'required|integer',
         ];
     }
 }

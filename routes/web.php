@@ -10,7 +10,7 @@ use App\Http\Controllers\BukuController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\RakController;
+use App\Http\Controllers\KategoriController;
 use App\Mail\VerifikasiBuku;
 
 /*
@@ -36,7 +36,7 @@ Route::middleware(['auth','checkRole','verified'])->prefix('dashboard')->group(f
     Route::put('role/{id}', [PetugasController::class, 'role'])->name('role.petugas');
     Route::resource('user',UserController::class)->only(['update','destroy']);
     Route::resource('buku',BukuController::class);
-    Route::resource('rak',RakController::class);
+    Route::resource('kategori',KategoriController::class);
     Route::resource('member',MemberController::class)->only(['index']);
     Route::resource('petugas',PetugasController::class);
     Route::put('transaksi/verifikasi/{id}/{hari}', [TransaksiController::class, 'verifikasi'])->name('transaksi.verifikasi');
