@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rak;
+use App\Models\Kategori;
 use App\Models\Buku;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -18,9 +18,17 @@ class BukuController extends Controller
      */
     public function index()
     {
+<<<<<<< HEAD
         $bukus = Buku::with('rak')->Search()->paginate(20);
         $raks = Rak::get();
         return view('dashboard.buku.index',compact('bukus','raks'));
+=======
+        $bukus = Buku::with('kategori')->when(request()->q, function($search){
+            $search->where(request()->by ?? 'judul','like','%'.request()->q.'%');
+        })->paginate(20);
+        $kategoris = Kategori::get();
+        return view('dashboard.buku.index',compact('bukus','kategoris'));
+>>>>>>> bd39737e7a8517d78cc1057563059a72877f3925
     }
 
     /**
@@ -64,11 +72,19 @@ class BukuController extends Controller
      * @param  \App\Models\Buku  $buku
      * @return \Illuminate\Http\Response
      */
+<<<<<<< HEAD
     public function edit(Buku $buku)
     {
         $raks = Rak::get();
         return view('dashboard.buku.edit',compact('buku','raks'));
     }
+=======
+            public function edit(Buku $buku)
+            {
+                $kategoris = Kategori::get();
+                return view('dashboard.buku.edit',compact('buku','kategoris'));
+            }
+>>>>>>> bd39737e7a8517d78cc1057563059a72877f3925
 
     /**
      * Update the specified resource in storage.

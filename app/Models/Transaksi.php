@@ -14,6 +14,9 @@ class Transaksi extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'status' => 'string',
+    ];
 
     public function member()
     {

@@ -24,7 +24,7 @@ class BookFactory extends Factory
             'tahun_terbit' => $this->faker->year(),
             'stok' => $this->faker->randomDigit(),
             'cover' => null,
-            'rak_id' => 1
+            'kategori_id' => 1
         ];
     }
 }

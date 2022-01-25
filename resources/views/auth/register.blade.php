@@ -51,15 +51,23 @@
         name="password_confirmation" required />
     </div>
 
-    <div class="flex items-center justify-end mt-4">
-        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-            {{ __('Already registered?') }}
-        </a>
-
-        <x-button class="ml-4">
-            {{ __('Register') }}
-        </x-button>
+    <div class="flex items-center justify-center my-4">
+       
+        {{-- <x-button class="ml-4">
+            {{ __('Daftar') }}
+        </x-button> --}}
+        <button type="submit" class="btn btn-block btn-primary">Daftar</button>
     </div>
+    <div class="flex items-center justify-center">
+        <a href="{{route('landing.index')}}" class="btn btn-error btn-block"><i data-feather="arrow-left" class="mr-2"></i> Halaman Utama</a>
+        
+    </div>
+     <div class="flex py-4">
+            {{ __('Sudah punya akun?') }}
+         <a class="underline text-gray-600 hover:text-gray-900 ml-2" href="{{ route('login') }}">
+            Masuk
+        </a>
+     </div>
 </form>
 </x-auth-card>
 </x-guest-layout>

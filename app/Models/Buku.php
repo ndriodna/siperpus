@@ -16,9 +16,9 @@ class Buku extends Model
 
     protected $guarded = [];
 
-    public function rak()
+    public function kategori()
     {
-        return $this->belongsTo(Rak::class);
+        return $this->belongsTo(Kategori::class);
     }
 
     public function transaksi()

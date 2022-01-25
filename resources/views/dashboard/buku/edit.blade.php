@@ -45,12 +45,12 @@
       </div>
       <div class="form-control">
         <label class="label">
-          <span class="label-text">Rak</span>
+          <span class="label-text">Kategori</span>
         </label>
-        <select name="rak_id" id="" class="select select-bordered select-primary">
-          @foreach($raks as $rak)
-          <option value="{{$rak->id}}" {{$rak->id == $buku->rak_id ? 'selected' : ''}}>
-            {{$rak->nama}}
+        <select name="kategori_id" id="" class="select select-bordered select-primary">
+          @foreach($kategoris as $kategori)
+          <option value="{{$kategori->id}}" {{$kategori->id == $buku->rak_id ? 'selected' : ''}}>
+            {{$kategori->nama}}
           </option>
           @endforeach
         </select>

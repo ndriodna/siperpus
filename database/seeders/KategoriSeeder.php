@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Rak;
+use App\Models\Kategori;
 use Illuminate\Database\Seeder;
 
-class RakSeeder extends Seeder
+class KategoriSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class RakSeeder extends Seeder
      */
     public function run()
     {
-        $raks = [
+        $kategoris = [
             [
                 'nama' => 'dummy1',
                 'created_at' => now(),
@@ -42,6 +42,6 @@ class RakSeeder extends Seeder
             ],
         ];
 
-        Rak::insert($raks);
+        Kategori::insert($kategoris);
     }
 }
