@@ -15,65 +15,72 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // hitung jumlah transaksi
         $countTransaksi = Transaksi::count();
+
+        // hitung jumlah buku
         $countBuku = Buku::count();
+
+        // hitung jumlah user
         $countUser = User::count();
+
+        // hitung jumlah petugas
         $countPetugas = Petugas::count();
+
+        // hitung jumlah member
         $countMember = Member::count();
 
+        // hitung jumlah buku bulan kemaren
+        $bukuBulanKemaren = Buku::LastMonth()->count();
 
-        // ambil data buku yg dimana created at >= tgl awal bulan sebelumnya sampai dengan tanggal akhir bulan sebelumnya, hitung jumlahnya
-        $bulan_kemaren = Buku::where('created_at', '>=', Carbon::now()->startOfMonth()->subMonthNoOverflow())
-        ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
+        // hitung jumlah buku bulan ini
+        $bukuBulanIni = Buku::ThisMonth()->count();
 
-        // ambil data buku yg dimana created at >= tgl awal bulan ini sampai dengan tanggal akhir bulan ini, hitung jumlahnya
-        $bulan_skrg = Buku::where('created_at', '>=', Carbon::now()->startOfMonth())
-        ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
+        // rumus presentase buku
+        $hasilAkhirBuku = null;
+        if ($bukuBulanKemaren > 0 && $bukuBulanIni > 0) {
+            $hasilPerbandingan = $bukuBulanIni - $bukuBulanKemaren;
 
-        //---------------- rumus persentase---------------//
-        // tambahan if klo bulan lalu kosong nda error
-        $hasil_akhir = null;                 
-        if ($bulan_kemaren > 0 && $bulan_skrg > 0) {
-            $hasil_perbandingan = $bulan_skrg - $bulan_kemaren;
+            $rumus = $hasilPerbandingan / $bukuBulanKemaren;
 
-            $rumus = $hasil_perbandingan / $bulan_kemaren;
-
-            $hasil_akhir = $rumus * 100;
+            $hasilAkhirBuku = $rumus * 100;
         }
 
-        //----------------------------------------------//
+        // hitung jumlah transaksi bulan kemaren
+        $transaksiBulanKemaren = Transaksi::LastMonth()->count();
 
-         // ambil data buku yg dimana created at >= tgl awal bulan sebelumnya sampai dengan tanggal akhir bulan sebelumnya, hitung jumlahnya
-        $bulan_kemaren_transaksi = Transaksi::where('created_at', '>=', Carbon::now()->startOfMonth()->subMonthNoOverflow())
-        ->where('created_at', '<=', Carbon::now()->endOfMonth()->subMonthsNoOverflow())->count();
+        // hitung jumlah transaksi bulan ini
+        $transaksiBulanIni = Transaksi::ThisMonth()->count();
 
-        // ambil data buku yg dimana created at >= tgl awal bulan ini sampai dengan tanggal akhir bulan ini, hitung jumlahnya
-        $bulan_skrg_transaksi = Transaksi::where('created_at', '>=', Carbon::now()->startOfMonth())
-        ->where('created_at', '<=', Carbon::now()->endOfMonth())->count();
+        // rumus presentase transaksi
+        $hasilAkhirTransaksi = null;
+        if ($transaksiBulanKemaren > 0 && $transaksiBulanIni > 0) {
+            $hasilPerbandingan = $transaksiBulanIni - $transaksiBulanKemaren;
 
-        //---------------- rumus persentase---------------//
-        // tambahan if klo bulan lalu kosong nda error
-        $hasil_akhir_transaksi = null;                 
-        if ($bulan_kemaren_transaksi > 0 && $bulan_skrg_transaksi > 0) {
-            $hasil_perbandingan = $bulan_skrg_transaksi - $bulan_kemaren_transaksi;
+            $rumus = $hasilPerbandingan / $transaksiBulanKemaren;
 
-            $rumus = $hasil_perbandingan / $bulan_kemaren_transaksi;
-            
-            $hasil_akhir_transaksi = $rumus * 100;
+            $hasilAkhirTransaksi = $rumus * 100;
         }
 
-        //----------------------------------------------//
+        // ambil data transaski dengan status menunggu verifikasi
+        $transaksi = Transaksi::FilterStatus('menunggu verifikasi')->get();
 
-        $transaksi = Transaksi::where('status','menunggu verifikasi')->get();
-
+        // variabel
         $onlyAuthMember = null;
         $transakiAuthMember = null;
         $notifTerlambat = null;
+
+        // check level user
         if (Auth::user()->level == 'member') {
+            // ambil data transaksi user yang sedang login dengan status menunggu verifikasi
             $onlyAuthMember = $transaksi->where('member_id', Auth::user()->member->id);
+
+            // ambil data transaski user yang sedang login
             $transakiAuthMember = Transaksi::where('member_id', Auth::user()->member->id)->get();
+
+            // ambil data transaksi user yang sedang login degan status pinjam dan tanggal kembali < sekarang
             $notifTerlambat = $transakiAuthMember->where('status','pinjam')->where('tgl_kembali','<' ,now());
         }
-        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','hasil_akhir','hasil_akhir_transaksi'));
+        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','hasilAkhirBuku','hasilAkhirTransaksi'));
     }
 }
