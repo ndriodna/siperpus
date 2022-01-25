@@ -30,13 +30,13 @@
 			<li class="w-90">
 				<a href="{{ route('login') }}" class="capitalize">
 					<i data-feather="user" class="mr-2"></i>
-					Login
+					Daftar
 				</a>
 			</li>
 			<li class="w-90">
 				<a href="{{ route('register') }}" class="capitalize">
 					<i data-feather="user" class="mr-2"></i>
-					Register
+					Masuk
 				</a>
 			</li>
 			@endif

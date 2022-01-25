@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rak;
+use App\Models\Kategori;
 use App\Models\Buku;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -18,11 +18,11 @@ class BukuController extends Controller
      */
     public function index()
     {
-        $bukus = Buku::with('rak')->when(request()->q, function($search){
+        $bukus = Buku::with('kategori')->when(request()->q, function($search){
             $search->where(request()->by ?? 'judul','like','%'.request()->q.'%');
         })->paginate(20);
-        $raks = Rak::get();
-        return view('dashboard.buku.index',compact('bukus','raks'));
+        $kategoris = Kategori::get();
+        return view('dashboard.buku.index',compact('bukus','kategoris'));
     }
 
             /**
@@ -81,8 +81,8 @@ class BukuController extends Controller
      */
             public function edit(Buku $buku)
             {
-                $raks = Rak::get();
-                return view('dashboard.buku.edit',compact('buku','raks'));
+                $kategoris = Kategori::get();
+                return view('dashboard.buku.edit',compact('buku','kategoris'));
             }
 
             /**

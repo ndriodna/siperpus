@@ -25,7 +25,7 @@ class BukuSeeder extends Seeder
                 'penerbit'      => 'airlangga',
                 'tahun_terbit'  => '2020',
                 'stok'          => '20',
-                'rak_id'        => rand(1,5),
+                'kategori_id'        => rand(1,5),
                 'created_at'    => now(),
                 'updated_at'    => now()
             ],
@@ -37,7 +37,7 @@ class BukuSeeder extends Seeder
                 'penerbit'      => 'airlangga',
                 'tahun_terbit'  => '2020',
                 'stok'          => '20',
-                'rak_id'        => rand(1,5),
+                'kategori_id'        => rand(1,5),
                 'created_at'    => now(),
                 'updated_at'    => now()
             ],
@@ -49,7 +49,7 @@ class BukuSeeder extends Seeder
                 'penerbit'      => 'airlangga',
                 'tahun_terbit'  => '2020',
                 'stok'          => '20',
-                'rak_id'        => rand(1,5),
+                'kategori_id'        => rand(1,5),
                 'created_at'    => now(),
                 'updated_at'    => now()
             ],
@@ -61,7 +61,7 @@ class BukuSeeder extends Seeder
                 'penerbit'      => 'airlangga',
                 'tahun_terbit'  => '2020',
                 'stok'          => '20',
-                'rak_id'        => rand(1,5),
+                'kategori_id'        => rand(1,5),
                 'created_at'    => now(),
                 'updated_at'    => now()
             ],
@@ -73,7 +73,7 @@ class BukuSeeder extends Seeder
                 'penerbit'      => 'airlangga',
                 'tahun_terbit'  => '2020',
                 'stok'          => '20',
-                'rak_id'        => rand(1,5),
+                'kategori_id'        => rand(1,5),
                 'created_at'    => now(),
                 'updated_at'    => now()
             ],

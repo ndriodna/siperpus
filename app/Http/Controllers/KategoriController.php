@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Rak;
+use App\Models\Kategori;
 use App\Models\Buku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class RakController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +16,10 @@ class RakController extends Controller
      */
     public function index()
     {
-      $raks = Rak::when(request()->q, function ($search){
+      $kategoris = Kategori::when(request()->q, function ($search){
         $search->where('nama','like','%'.request()->q.'%');
     })->paginate(20);
-      return view('dashboard.rak.index',compact('raks'));
+      return view('dashboard.kategori.index',compact('kategoris'));
   }
 
     /**
@@ -41,23 +41,12 @@ class RakController extends Controller
             return back()->with('toast_error', $validator->messages()->all()[0]);
         }
 
-        Rak::create([
+        Kategori::create([
             'nama' => $request->nama
         ]);
-        return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Ditambahkan!');
+        return redirect(route('kategori.index'))->with('toast_success', 'Data Berhasil Ditambahkan!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Rak  $rak
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Rak $rak)
-    {
-        $rak->with('buku');
-        return view('dashboard.rak.show',compact('rak'));
-    }
 
     /**
      * Update the specified resource in storage.
@@ -66,15 +55,15 @@ class RakController extends Controller
      * @param  \App\Models\Rak  $rak
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Rak $rak)
+    public function update(Request $request, Kategori $kategori)
     {
         $request->validate([
             'nama' => 'required|string'
         ]);
-        $rak->update([
+        $kategori->update([
             'nama' => $request->nama
         ]);
-        return redirect(route('rak.index'))->with('toast_success', 'Data Berhasil Diubah!');
+        return redirect(route('kategori.index'))->with('toast_success', 'Data Berhasil Diubah!');
     }
 
     /**
@@ -83,9 +72,9 @@ class RakController extends Controller
      * @param  \App\Models\Rak  $rak
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Rak $rak)
+    public function destroy(Kategori $kategori)
     {
-        $rak->delete();
+        $kategori->delete();
         return back()->with('toast_success', 'Data Berhasil dihapus!');
     }
 }

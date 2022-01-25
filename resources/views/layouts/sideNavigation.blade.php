@@ -57,21 +57,27 @@
                 </li>
             @endif
             @if (Auth::user()->level != 'member')
-                <li class="mb-2 {{ Request::is('dashboard/buku*') ? 'bg-red-400 rounded-lg' : '' }} }}">
-                    <a href="{{ route('buku.index') }}" class="capitalize">
-                        <i data-feather="book" class="mr-2"></i>
-                        Buku
-                    </a>
+            <li
+                    {{ Request::is(['dashboard/user*, dashboard/petugas*, dashboard/member*']) ? 'bg-red-400 rounded-lg' : '' }}>
+                    <div class="collapse w-90 rounded-box collapse-arrow">
+                        <input type="checkbox">
+                        <div class="collapse-title">
+                            <i data-feather="book" class="ml-1 mr-2 inline-block"></i>Buku
+                        </div>
+                        <div class="collapse-content">
+                            <ul>
+                                    <li class="{{ Request::is('dashboard/buku*') ? 'bg-red-400 rounded-lg' : '' }}"><a
+                                            href="{{ route('buku.index') }}"><i data-feather="book"
+                                                class="mr-2"></i>Buku</a></li>
+                                <li class="{{ Request::is('dashboard/kategori*') ? 'bg-red-400 rounded-lg' : '' }}"><a
+                                        href="{{ route('kategori.index') }}"><i data-feather="archive"
+                                            class="mr-2"></i>Kategori</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </li>
             @endif
-            @if (Auth::user()->level != 'member')
-                <li class="mb-2 {{ Request::is('dashboard/rak*') ? 'bg-red-400 rounded-lg' : '' }}">
-                    <a href="{{ route('rak.index') }}" class="capitalize">
-                        <i data-feather="archive" class="mr-2"></i>
-                        Rak Buku
-                    </a>
-                </li>
-            @endif
+            
             @if (Auth::user()->level == 'member')
                 @if (Auth::user()->member->nim != '')
                     <li class="{{ Request::is('dashboard/transaksi*') ? 'bg-red-400 rounded-lg' : '' }}">
