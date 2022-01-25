@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class MemberOnly
 {
@@ -20,6 +21,7 @@ class MemberOnly
         if(Auth::check() && Auth::user()->level == 'member'){
             return $next($request);
         }
-        return back()->with('toast_error', 'Hanya member yang bisa meminjam buku');
+        alert()->error('Mohon maaf', 'Peminjaman hanya khusus member!');
+        return redirect(route('landing.index'));
     }
 }

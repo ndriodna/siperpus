@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Buku;
 use App\Models\Transaksi;
-use Illuminate\Support\Str;
 use App\Mail\VerifikasiBuku;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,32 +28,29 @@ class TransaksiController extends Controller
             if(request()->by == 'status'){
                 /* ambil data transaksi ketika request dijalankan carikan data yang hampir sama
                 dengan request dibatasi 20 data perhalaman*/
-                $transaksis = Transaksi::with('member','petugas','buku')->when(request()->q, function($search){
-                    $search->where(request()->by ?? 'status', 'like', '%'. request()->q. '%');
-                })->paginate(20);
+                $transaksis = Transaksi::with('member','petugas','buku')
+                                       ->SearchBy('status')->paginate(20);
 
-                // jika request filter berdasarkan nama
+            // jika request filter berdasarkan nama
             }elseif(request()->by == 'nama'){
                 /* ambil data transaksi dengan relasi petugas dan member ketika request dijalankan
                 carikan data yang hampir sama dengan request dibatasi 20 data perhalaman*/
-                $transaksis = Transaksi::with('member','petugas','buku')->whereHas('petugas', function($search){
-                    $search->where(request()->by ?? 'petugas.nama', 'like', '%'. request()->q. '%');
-                })->orWhereHas('member', function($search){
-                    $search->where(request()->by ?? 'member.nama', 'like', '%'. request()->q. '%');
-                })->paginate(20);
+                $transaksis = Transaksi::with('member','petugas','buku')
+                                       ->SearchRelasi('member')
+                                       ->OrSearchRelasi('petugas')
+                                       ->paginate(20);
 
-                // jika request berdasakan judul
+            // jika request berdasakan judul
             }elseif(request()->by == 'judul'){
                 /* ambil data transaksi dengan relasi buku ketika request dijalankan
                 carikan data yang hampir sama dengan request dibatasi 20 data perhalaman*/
-                $transaksis = Transaksi::with('member','petugas','buku')->whereHas('buku', function($search){
-                    $search->where(request()->by ?? 'buku.judul', 'like', '%'. request()->q. '%');
-                })->paginate(20);
+                $transaksis = Transaksi::with('member','petugas','buku')
+                                       ->SearchRelasi('buku')->paginate(20);
             }
-
             // lempar data ke dalam transaksi index
             return view('dashboard.transaksi.index', compact('transaksis'));
         }else{
+
             $transaksis_member = Transaksi::with('member','petugas','buku')
             ->where('member_id', auth::user()->member->id)->paginate(20);
 
@@ -67,9 +63,7 @@ class TransaksiController extends Controller
                 carikan data yang hampir sama dengan status yg dipilih batasi
                 20 data perhalaman*/
                 $transaksis_member = Transaksi::with('member','petugas','buku')->orderBy('created_at','DESC')
-                ->where('member_id', auth::user()->member->id)->when(request()->q, function($search){
-                    $search->where('status','like', '%'.request()->q.'%');
-                })->paginate(20);
+                ->where('member_id', auth::user()->member->id)->Search('status')->paginate(20);
                 // lempar data kedalam transaski member
                 return view('dashboard.transaksi.member', compact('transaksis_member'));
             }
@@ -156,7 +150,7 @@ class TransaksiController extends Controller
             $data['denda'] = $denda;
         }
         if ($data['denda'] > 0) {
-            $transaksi->update($data + 
+            $transaksi->update($data +
                 ['status_denda' => 'belum lunas']);
         }else{
         // update data transaksi menggunakan variabel $data

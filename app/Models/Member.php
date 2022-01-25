@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HelperTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Member extends Model
 {
-    use HasFactory;
+    use HasFactory, HelperTrait;
 
     protected $guarded = [];
 

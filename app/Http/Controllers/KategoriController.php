@@ -16,11 +16,9 @@ class KategoriController extends Controller
      */
     public function index()
     {
-      $kategoris = Kategori::when(request()->q, function ($search){
-        $search->where('nama','like','%'.request()->q.'%');
-    })->paginate(20);
+      $kategoris = Kategori::Search('nama')->paginate(20);
       return view('dashboard.kategori.index',compact('kategoris'));
-  }
+    }
 
     /**
      * Store a newly created resource in storage.

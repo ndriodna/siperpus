@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\Carbon;
+use App\Traits\HelperTrait;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Transaksi extends Model
 {
-    use HasFactory;
+    use HasFactory, HelperTrait;
 
-    protected $guarded=[];
+    protected $guarded = [];
 
     public function member()
     {
