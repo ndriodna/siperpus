@@ -16,16 +16,9 @@ class KategoriController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD:app/Http/Controllers/RakController.php
-      $raks = Rak::Search('nama')->paginate(20);
-      return view('dashboard.rak.index',compact('raks'));
-=======
-      $kategoris = Kategori::when(request()->q, function ($search){
-        $search->where('nama','like','%'.request()->q.'%');
-    })->paginate(20);
+      $kategoris = Kategori::Search('nama')->paginate(20);
       return view('dashboard.kategori.index',compact('kategoris'));
->>>>>>> bd39737e7a8517d78cc1057563059a72877f3925:app/Http/Controllers/KategoriController.php
-  }
+    }
 
     /**
      * Store a newly created resource in storage.
