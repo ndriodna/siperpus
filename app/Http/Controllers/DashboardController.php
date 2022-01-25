@@ -69,12 +69,9 @@ class DashboardController extends Controller
         $onlyAuthMember = null;
         $transakiAuthMember = null;
         $notifTerlambat = null;
-<<<<<<< HEAD
+        $notifDenda = null;
 
         // check level user
-=======
-        $notifDenda = null;
->>>>>>> bd39737e7a8517d78cc1057563059a72877f3925
         if (Auth::user()->level == 'member') {
             // ambil data transaksi user yang sedang login dengan status menunggu verifikasi
             $onlyAuthMember = $transaksi->where('member_id', Auth::user()->member->id);
@@ -86,10 +83,8 @@ class DashboardController extends Controller
             $notifTerlambat = $transakiAuthMember->where('status','pinjam')->where('tgl_kembali','<' ,now());
             $notifDenda = $transakiAuthMember->where('status_denda','belum lunas')->count();
         }
-<<<<<<< HEAD
-        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','hasilAkhirBuku','hasilAkhirTransaksi'));
-=======
-        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','notifDenda','hasil_akhir','hasil_akhir_transaksi'));
->>>>>>> bd39737e7a8517d78cc1057563059a72877f3925
+
+        return view('dashboard',compact('transaksi','onlyAuthMember','transakiAuthMember','countTransaksi','countBuku','countUser','countPetugas','countMember','notifTerlambat','notifDenda','hasilAkhirBuku','hasilAkhirTransaksi'));
+
     }
 }
