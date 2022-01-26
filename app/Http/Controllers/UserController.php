@@ -16,21 +16,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::when(request()->q, function($search){
-            $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
-        })->paginate(20);
+        $users = User::SearchBy(request()->by ?? 'name')->paginate(20);
         return view('dashboard.user.index',compact('users'));
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-     
     }
 
     public function update(Request $request, User $user)

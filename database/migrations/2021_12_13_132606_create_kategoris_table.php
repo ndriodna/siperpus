@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRaksTable extends Migration
+class CreateKategorisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateRaksTable extends Migration
      */
     public function up()
     {
-        Schema::create('raks', function (Blueprint $table) {
+        Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
             $table->string('nama')->nullable();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateRaksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raks');
+        Schema::dropIfExists('kategoris');
     }
 }

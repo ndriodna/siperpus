@@ -2,19 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Rak;
+use App\Models\Transaksi;
+use App\Traits\HelperTrait;
+use Illuminate\Support\Str;
 use Database\Factories\BookFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Buku extends Model
 {
-    use HasFactory;
+    use HasFactory, HelperTrait;
 
     protected $guarded = [];
 
-    public function rak()
+    public function kategori()
     {
-        return $this->belongsTo(Rak::class);
+        return $this->belongsTo(Kategori::class);
     }
 
     public function transaksi()
@@ -25,6 +29,12 @@ class Buku extends Model
     protected static function newFactory()
     {
         return BookFactory::new();
+    }
+
+    public function setJudulAttribute($value)
+    {
+        $this->attributes['judul'] = $value;
+        $this->attributes['slug'] = Str::slug($value);
     }
 
     public function getCoverAttribute($cover)

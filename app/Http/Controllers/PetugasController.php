@@ -17,79 +17,9 @@ class PetugasController extends Controller
      */
     public function index()
     {
-        // ambil data user dengan member dimana levelnya != member, pecah 10 data per halaman
-        // $users = User::with('member','petugas')->where('level', '!=', 'admin')->paginate(10);
-        $petugas = Petugas::with('user')->when(request()->q, function($search){
-            $search->where(request()->by ?? 'nama','like','%'.request()->q.'%');
-        })->paginate(20);
-        
+        $petugas = Petugas::with('user')->SearchBy(request()->by ?? 'nama')->paginate(20);
+
         return view('dashboard.petugas.index',compact('petugas'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(PetugasRequest $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Petugas  $petugas
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Petugas $petugas)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Petugas  $petugas
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Petugas $petugas)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Petugas  $petugas
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Petugas $petugas)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Petugas  $petugas
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Petugas $petugas)
-    {
-        //
     }
 
     public function role($id)

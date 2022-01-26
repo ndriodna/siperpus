@@ -34,10 +34,10 @@
             </div>
         </form>
 
-        <div class="mt-8 border-b-2 border-blue-300"></div>
 
         {{-- form bio --}}
         @if (Auth::user()->level != 'admin')
+        <div class="mt-8 border-b-2 border-blue-300"></div>
         <form action="{{ route('profile.store') }}" method="post">
             @csrf
             <div class="mt-12 mx-auto ">
@@ -48,7 +48,7 @@
                     <label class="label">
                         <span class="label-text">Nim</span>
                     </label>
-                    <input type="text" class="input input-primary" name="nim" placeholder="Masukan nim"
+                    <input type="number" class="input input-primary" name="nim" placeholder="Masukan nim"
                     value="{{ auth::user()->member->nim ?? '' }}">
                 </div>
                 @endif

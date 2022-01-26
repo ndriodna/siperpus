@@ -47,11 +47,11 @@
             <input type="file" class="input input-primary" name="cover">
           </div>
           <div class="form-control">
-            <label class="label"><span class="label-text">Rak <span class="text-error">*</span></span></label>
-            <select name="rak_id" class="select select-bordered select-primary" required>
-              <option disabled="disabled" selected="selected" value="">Pilih Rak Buku</option>
-              @foreach($raks as $rak)
-              <option value="{{ $rak->id }}">{{ $rak->nama }}</option>
+            <label class="label"><span class="label-text">Kategori <span class="text-error">*</span></span></label>
+            <select name="kategori_id" class="select select-bordered select-primary" required>
+              <option disabled="disabled" selected="selected" value="">Pilih Kategori Buku</option>
+              @foreach($kategoris as $kategori)
+              <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
               @endforeach
             </select>
           </div>
@@ -96,7 +96,7 @@
           <th class="w-1/12">Penerbit</th>
           <th class="w-1/12">Thn</th>
           <th class="w-1/12">Stok</th>
-          <th class="w-1/12">Rak</th>
+          <th class="w-1/12">Kategori</th>
           <th class="w-2/12">Action</th>
         </tr>
       </thead>
@@ -109,7 +109,7 @@
           <td class="px-6 py-4">{{ $buku->penerbit }}</td>
           <td class="px-6 py-4">{{ $buku->tahun_terbit }}</td>
           <td class="px-6 py-4">{{ $buku->stok }}</td>
-          <td class="px-6 py-4">{{ $buku->rak->nama }}</td>
+          <td class="px-6 py-4">{{ $buku->kategori->nama }}</td>
           @if (Auth::user()->level != 'member')
           <td class="px-6 py-4" colspan="2">
             <label class="btn btn-sm btn-warning" for="modal{{$buku->id}}"><i data-feather="edit"></i></label>
